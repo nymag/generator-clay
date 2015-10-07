@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/nymag/generator-clay/issues"
   },
-  "homepage": "https://github.com/nymag/generator-clay#readme"
+  "homepage": "https://github.com/nymag/generator-clay#readme",
+  "dependencies": {
+    "yeoman-generator": "^0.20.3"
+  }
 }
