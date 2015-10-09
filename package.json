@@ -2,7 +2,11 @@
   "name": "generator-clay",
   "version": "0.0.1",
   "description": "Generate Clay instances, sites, and components",
-  "main": "index.js",
+  "files": [
+    "app",
+    "component",
+    "site"
+  ],
   "scripts": {
     "test": "mocha"
   },
@@ -11,7 +15,7 @@
     "url": "git+https://github.com/nymag/generator-clay.git"
   },
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator clay"
   ],
   "author": "New York Media",
   "license": "MIT",
