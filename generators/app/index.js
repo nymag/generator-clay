@@ -8,6 +8,6 @@ module.exports = generators.Base.extend({
   },
 
   method1: function () {
-    console.log('hello!');
+    console.log('generating new clay instance');
   }
 });

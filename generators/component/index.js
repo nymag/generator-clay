@@ -4,10 +4,10 @@ var generators = require('yeoman-generator');
 
 module.exports = generators.NamedBase.extend({
   constructor: function () {
-    generators.Base.apply(this, arguments);
+    generators.NamedBase.apply(this, arguments);
   },
 
   method1: function () {
-    console.log('hello!');
+    console.log('generating new component: ' + this.name);
   }
 });
