@@ -27,8 +27,10 @@ module.exports = generators.NamedBase.extend({
 
       if (hasComponentFolder) {
         console.log(chalk.red('Component already exists at components/' + name));
+        process.exit(1);
       } else if (hasNpmComponent) {
         console.log(chalk.red('Component with a similar name was installed via npm: clay-' + name));
+        process.exit(1);
       } else {
         console.log(chalk.blue('Generating new component: ' + name));
       }

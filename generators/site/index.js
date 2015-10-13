@@ -16,6 +16,7 @@ module.exports = generators.NamedBase.extend({
 
       if (hasSiteFolder) {
         console.log(chalk.red('Site already exists!'));
+        process.exit(1);
       } else {
         console.log(chalk.blue('Generating new site: ' + name));
       }
