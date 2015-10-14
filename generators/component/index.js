@@ -4,6 +4,7 @@ var generators = require('yeoman-generator'),
   fs = require('fs'),
   chalk = require('chalk'),
   _ = require('lodash'),
+  path = require('path'),
   mkdirp = require('mkdirp');
 
 module.exports = generators.NamedBase.extend({
@@ -56,6 +57,16 @@ module.exports = generators.NamedBase.extend({
 
     createStyles: function () {
       // create all.css and print.css
+      var name = this.name,
+        folder = this.destinationPath('components', name),
+        styles = [
+          'all.css',
+          'print.css'
+        ];
+
+      _.each(styles, function (style) {
+        this.fs.copyTpl(this.templatePath(style), path.join(folder, style), { name: name });
+      }.bind(this));
     }
   }
 });
