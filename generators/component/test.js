@@ -39,3 +39,20 @@ describe('clay:component', function () {
     assert.fileContent(file, /class="foo"/);
   });
 });
+
+describe('clay:component', function () {
+  before(function (done) {
+    helpers.run(path.join(__dirname, 'index.js'))
+      .withArguments(['foo'])
+      .withOptions({ tag: 'aside' })
+      .withPrompts({ templateLang: 'nunjucks' })
+      .on('end', done);
+  });
+
+  it('allows tag option', function () {
+    var file = path.join(folder, 'template.nunjucks');
+
+    assert.file(file);
+    assert.fileContent(file, /^<aside/);
+  });
+});
