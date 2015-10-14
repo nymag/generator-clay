@@ -52,6 +52,10 @@ module.exports = generators.NamedBase.extend({
 
         done();
       });
+    },
+
+    createStyles: function () {
+      // create all.css and print.css
     }
   }
 });
