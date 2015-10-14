@@ -5,11 +5,17 @@ var generators = require('yeoman-generator'),
   chalk = require('chalk'),
   _ = require('lodash'),
   path = require('path'),
-  mkdirp = require('mkdirp');
+  mkdirp = require('mkdirp'),
+  tags = require('./tags.json');
 
 module.exports = generators.NamedBase.extend({
   constructor: function () {
     generators.NamedBase.apply(this, arguments);
+
+    // --tag option
+    this.option('tag');
+    this.tag = this.options.tag ? this.options.tag : 'section';
+    // default tag to section if not specified
   },
 
   initializing: {
@@ -34,8 +40,6 @@ module.exports = generators.NamedBase.extend({
       } else if (hasNpmComponent) {
         this.log(chalk.red('Component with a similar name was installed via npm: clay-' + name));
         process.exit(1);
-      } else {
-        this.log(chalk.blue('Generating new component: ' + name));
       }
     }
   },
@@ -83,13 +87,17 @@ module.exports = generators.NamedBase.extend({
   writing: {
     createFolder: function () {
       var done = this.async(),
-        log = this.log;
+        log = this.log,
+        name = this.name;
 
       // create components/<name> folder (creating the components folder if it doesn't exist)
       mkdirp(this.destinationPath('components', this.name), function (err) {
         if (err) {
           log(chalk.red(err.message));
           process.exit(0);
+        } else {
+          log(chalk.dim.blue('-----------------------'));
+          log(chalk.bold('Generating new component: ') + chalk.bold.blue(name));
         }
 
         done();
@@ -113,12 +121,16 @@ module.exports = generators.NamedBase.extend({
     createTemplate: function () {
       var tpl = 'template',
         ext = this.tplExtension,
+        tag = this.tag,
         name = this.name,
         folder = this.destinationPath('components', name);
 
+      // we're gonna create the template with the tag specified (or the default)
+      this.log(chalk.grey(_.startCase(tag) + ': ' + tags[tag]));
+
       if (ext === 'nunjucks' || ext === 'jade') {
         // if it's nunjucks or jade, copy over the template
-        this.fs.copyTpl(this.templatePath(tpl + '.' + ext), path.join(folder, tpl + '.' + ext), { name: name });
+        this.fs.copyTpl(this.templatePath(tpl + '.' + ext), path.join(folder, tpl + '.' + ext), { name: name, tag: tag });
       } else {
         // otherwise create a blank file with that extension
         this.fs.write(path.join(folder, tpl + '.' + ext), '');

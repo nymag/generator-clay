@@ -1,0 +1,9 @@
+{
+  "section": "a generic grouping of content",
+  "article": "a self-contained composition that is independently distributable",
+  "nav": "a major navigation block",
+  "aside": "an element that's tangentially related to the content around it",
+  "figure": "an element used to annotate illustrations, diagrams, photos",
+  "p": "a block of text",
+  "div": "an element of last resort"
+}
