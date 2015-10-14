@@ -40,7 +40,7 @@ describe('clay:component', function () {
   });
 });
 
-describe('clay:component', function () {
+describe('clay:component --tag aside', function () {
   before(function (done) {
     helpers.run(path.join(__dirname, 'index.js'))
       .withArguments(['foo'])
