@@ -3,30 +3,39 @@
 var path = require('path'),
   generators = require('yeoman-generator'),
   helpers = generators.test,
-  assert = generators.assert;
+  assert = generators.assert,
+  folder = path.join('components', 'foo');
 
 describe('clay:component', function () {
   before(function (done) {
     helpers.run(path.join(__dirname, 'index.js'))
       .withArguments(['foo'])
+      .withPrompts({ templateLang: 'nunjucks' })
       .on('end', done);
   });
 
   it('generates a component folder', function () {
-    assert.file('components/foo');
+    assert.file(folder);
   });
 
   it('adds an all.css stylesheet', function () {
-    var file = 'components/foo/all.css';
+    var file = path.join(folder, 'all.css');
 
     assert.file(file);
     assert.fileContent(file, /^\.foo \{/);
   });
 
   it('adds a print.css stylesheet', function () {
-    var file = 'components/foo/print.css';
+    var file = path.join(folder, 'print.css');
 
     assert.file(file);
     assert.fileContent(file, /^\.foo \{/);
+  });
+
+  it('adds a template', function () {
+    var file = path.join(folder, 'template.nunjucks');
+
+    assert.file(file);
+    assert.fileContent(file, /class="foo"/);
   });
 });

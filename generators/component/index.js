@@ -40,6 +40,46 @@ module.exports = generators.NamedBase.extend({
     }
   },
 
+  prompting: {
+    getTplExtension: function () {
+      var done = this.async();
+
+      this.prompt([{
+        // ask for the template language
+        type: 'list',
+        name: 'templateLang',
+        message: 'What templating language do you want to use?',
+        default: 'nunjucks',
+        choices: [{
+          name: 'Nunjucks',
+          value: 'nunjucks'
+        }, {
+          name: 'Jade',
+          value: 'jade'
+        }, {
+          name: 'Other (enter on next prompt)',
+          value: 'other'
+        }],
+        store: true // store their defaults for the next time they use this
+      }, {
+        // ask for custom template language if they answered 'other'
+        type: 'input',
+        name: 'customTemplateLang',
+        message: 'Please type the extension you want',
+        filter: function (input) {
+          return input.indexOf('.') === 0 ? input.replace('.', '') : input;
+          // remove dot if they type it, e.g. .ejs -> ejs
+        },
+        when: function (answers) {
+          return answers.templateLang === 'other';
+        }
+      }], function (answers) {
+        this.tplExtension = answers.templateLang !== 'other' ? answers.templateLang : answers.customTemplateLang;
+        done();
+      }.bind(this));
+    }
+  },
+
   writing: {
     createFolder: function () {
       var done = this.async(),
@@ -68,6 +108,21 @@ module.exports = generators.NamedBase.extend({
       _.each(styles, function (style) {
         this.fs.copyTpl(this.templatePath(style), path.join(folder, style), { name: name });
       }.bind(this));
+    },
+
+    createTemplate: function () {
+      var tpl = 'template',
+        ext = this.tplExtension,
+        name = this.name,
+        folder = this.destinationPath('components', name);
+
+      if (ext === 'nunjucks' || ext === 'jade') {
+        // if it's nunjucks or jade, copy over the template
+        this.fs.copyTpl(this.templatePath(tpl + '.' + ext), path.join(folder, tpl + '.' + ext), { name: name });
+      } else {
+        // otherwise create a blank file with that extension
+        this.fs.write(path.join(folder, tpl + '.' + ext), '');
+      }
     }
   }
 });
