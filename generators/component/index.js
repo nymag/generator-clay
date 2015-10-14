@@ -45,6 +45,7 @@ module.exports = generators.NamedBase.extend({
       var done = this.async(),
         log = this.log;
 
+      // create components/<name> folder (creating the components folder if it doesn't exist)
       mkdirp(this.destinationPath('components', this.name), function (err) {
         if (err) {
           log(chalk.red(err.message));
