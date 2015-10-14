@@ -3,7 +3,8 @@
 var generators = require('yeoman-generator'),
   fs = require('fs'),
   chalk = require('chalk'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  mkdirp = require('mkdirp');
 
 module.exports = generators.NamedBase.extend({
   constructor: function () {
@@ -14,6 +15,7 @@ module.exports = generators.NamedBase.extend({
     checkComponent: function () {
       var name = this.name,
         hasComponentFolder = fs.existsSync(this.destinationPath('components', name)),
+        // note: this.fs.exists() doesn't work for directories
         hasNpmComponent;
 
       try {
@@ -26,14 +28,30 @@ module.exports = generators.NamedBase.extend({
       }
 
       if (hasComponentFolder) {
-        console.log(chalk.red('Component already exists at components/' + name));
+        this.log(chalk.red('Component already exists at components/' + name));
         process.exit(1);
       } else if (hasNpmComponent) {
-        console.log(chalk.red('Component with a similar name was installed via npm: clay-' + name));
+        this.log(chalk.red('Component with a similar name was installed via npm: clay-' + name));
         process.exit(1);
       } else {
-        console.log(chalk.blue('Generating new component: ' + name));
+        this.log(chalk.blue('Generating new component: ' + name));
       }
+    }
+  },
+
+  writing: {
+    createFolder: function () {
+      var done = this.async(),
+        log = this.log;
+
+      mkdirp(this.destinationPath('components', this.name), function (err) {
+        if (err) {
+          log(chalk.red(err.message));
+          process.exit(0);
+        }
+
+        done();
+      });
     }
   }
 });
