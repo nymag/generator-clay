@@ -67,7 +67,7 @@ describe('clay:component', function () {
 
   describe('--viewports', function () {
     /**
-     * test a viewport
+     * test a named viewport (in the viewports hash)
      * @param {string} viewport
      * @param {Function} done async callback
      */
