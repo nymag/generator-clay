@@ -1,0 +1,3 @@
+<% for (var i = 0; i < fields.length; i++) { %><%= fields[i] %>:
+  _has: text
+<% } %>
