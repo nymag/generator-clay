@@ -63,3 +63,17 @@ yo clay:component <name> --viewports 0-300,300-600,600+,1200+
 600+.css
 1200+.css
 ```
+
+## Site Generator
+
+You can use the site generator to generate new sites in your clay repo.
+
+```
+yo clay:site <name>
+```
+
+It will prompt you for the human-readable name, domain, and path. It'll add these files:
+
+* `index.js` with a default route
+* `config.yml` with your site config
+* `local.yml` pointing to localhost. This allows you to develop quickly and easily
