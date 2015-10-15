@@ -17,16 +17,10 @@ _Note: Your template language choice will be stored as the default the next time
 
 ### --tag
 
-You can pass a `--tag` argument with the name of the tag/element you want to use, rather than using the default of `section`. These are the options:
+You can pass a `--tag` argument with the name of the tag/element you want to use, rather than using the default of `section`. The acceptable tags are defined in the [tags json](https://github.com/nymag/generator-clay/blob/master/generators/component/tags.json).
 
 ```
-yo clay:component --tag section
-yo clay:component --tag article
-yo clay:component --tag nav
-yo clay:component --tag aside
-yo clay:component --tag figure
-yo clay:component --tag p
-yo clay:component --tag div
+yo clay:component <name> --tag <tag>
 ```
 
 ### --viewports
@@ -34,18 +28,15 @@ yo clay:component --tag div
 In addition to the default `all.css` and `print.css`, you can specify viewports to be created.
 
 ```
-yo clay:component --viewports m
-yo clay:component --viewports mobile
+yo clay:component <name> --viewports <m or mobile>
 
 # would create 0-600.css
 
-yo clay:component --viewports t
-yo clay:component --viewports tablet
+yo clay:component <name> --viewports <t or tablet>
 
 # would create 600-1024.css
 
-yo clay:component --viewports d
-yo clay:component --viewports desktop
+yo clay:component <name> --viewports <d or desktop>
 
 # would create 1024+.css
 ```
@@ -53,7 +44,7 @@ yo clay:component --viewports desktop
 You can also specify arbitrary viewports by passing in a comma-separated string. For more details on the syntax, see [responsive-filenames](https://github.com/nymag/responsive-filenames#responsive-filenames).
 
 ```
-yo clay:component --viewports 0-300,300-600,600+,1200+
+yo clay:component <name> --viewports 0-300,300-600,600+,1200+
 
 # would create:
 
