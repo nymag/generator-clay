@@ -2,6 +2,7 @@
 
 var generators = require('yeoman-generator'),
   fs = require('fs'),
+  path = require('path'),
   chalk = require('chalk'),
   mkdirp = require('mkdirp');
 
@@ -41,6 +42,13 @@ module.exports = generators.NamedBase.extend({
 
         done();
       });
+    },
+
+    createIndex: function () {
+      var name = this.name,
+        folder = this.destinationPath('sites', name);
+
+      this.fs.copy(this.templatePath('index.js'), path.join(folder, 'index.js'));
     }
   }
 });

@@ -28,11 +28,10 @@ describe('clay:site', function () {
       assert.file(folder);
     });
 
-    // it('adds an index.js with basic route', function () {
-    //   var file = path.join(folder, 'index.js');
-    //
-    //   assert.file(file);
-    //   assert.fileContent(file, /^\.foo \{/);
-    // });
+    it('adds an index.js with basic route', function () {
+      var file = path.join(folder, 'index.js');
+
+      assert.file(file);
+    });
   });
 });
