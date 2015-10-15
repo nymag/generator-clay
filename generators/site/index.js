@@ -2,7 +2,8 @@
 
 var generators = require('yeoman-generator'),
   fs = require('fs'),
-  chalk = require('chalk');
+  chalk = require('chalk'),
+  mkdirp = require('mkdirp');
 
 module.exports = generators.NamedBase.extend({
   constructor: function () {
@@ -13,13 +14,33 @@ module.exports = generators.NamedBase.extend({
     checkSite: function () {
       var name = this.name,
         hasSiteFolder = fs.existsSync(this.destinationPath('sites', name));
+        // note: this.fs.exists() doesn't work for directories
 
       if (hasSiteFolder) {
-        console.log(chalk.red('Site already exists!'));
+        this.log(chalk.red('Site already exists at sites/' + name));
         process.exit(1);
-      } else {
-        console.log(chalk.blue('Generating new site: ' + name));
       }
+    }
+  },
+
+  writing: {
+    createFolder: function () {
+      var done = this.async(),
+        log = this.log,
+        name = this.name;
+
+      // create sites/<name> folder (creating the sites folder if it doesn't exist)
+      mkdirp(this.destinationPath('sites', name), function (err) {
+        if (err) {
+          log(chalk.red(err.message));
+          process.exit(0);
+        } else {
+          log(chalk.dim.blue('-----------------------'));
+          log(chalk.bold('Generating new site: ') + chalk.bold.blue(name));
+        }
+
+        done();
+      });
     }
   }
 });
