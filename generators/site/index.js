@@ -4,7 +4,8 @@ var generators = require('yeoman-generator'),
   fs = require('fs'),
   path = require('path'),
   chalk = require('chalk'),
-  mkdirp = require('mkdirp');
+  mkdirp = require('mkdirp'),
+  _ = require('lodash');
 
 module.exports = generators.NamedBase.extend({
   constructor: function () {
@@ -21,6 +22,48 @@ module.exports = generators.NamedBase.extend({
         this.log(chalk.red('Site already exists at sites/' + name));
         process.exit(1);
       }
+    }
+  },
+
+  prompting: {
+    getSiteConfig: function () {
+      var done = this.async();
+
+      this.prompt([{
+        type: 'input',
+        name: 'name',
+        message: 'What is the human-readable name of your site'
+      }, {
+        type: 'input',
+        name: 'host',
+        message: 'What is your site\'s domain name'
+      }, {
+        type: 'input',
+        name: 'path',
+        message: 'What is your site\'s path',
+        default: '/',
+        filter: function (input) {
+          // add/remove slashes if the input is more than just '/'
+          if (input === '/') {
+            return input;
+          }
+
+          if (input.indexOf('/') !== 0) {
+            // if it doesn't start with a slash, add one
+            input = '/' + input;
+          }
+
+          if (input.lastIndexOf('/') === input.length - 1) {
+            // if it ends with a slash, remove it
+            input = input.substring(0, input.length - 1);
+          }
+
+          return input;
+        }
+      }], function (answers) {
+        this.config = answers;
+        done();
+      }.bind(this));
     }
   },
 
@@ -56,6 +99,20 @@ module.exports = generators.NamedBase.extend({
         folder = this.destinationPath('sites', name);
 
       this.fs.copy(this.templatePath('local.yml'), path.join(folder, 'local.yml'));
+    },
+
+    createSiteConfig: function () {
+      var name = this.name,
+        folder = this.destinationPath('sites', name),
+        config = this.config;
+
+      // add any defaults we don't want to expose as prompts
+      _.defaults(config, {
+        assetDir: 'public',
+        assetPath: config.path
+      });
+
+      console.log(config);
     }
   }
 });
