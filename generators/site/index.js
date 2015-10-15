@@ -49,6 +49,13 @@ module.exports = generators.NamedBase.extend({
         folder = this.destinationPath('sites', name);
 
       this.fs.copy(this.templatePath('index.js'), path.join(folder, 'index.js'));
+    },
+
+    createLocalConfig: function () {
+      var name = this.name,
+        folder = this.destinationPath('sites', name);
+
+      this.fs.copy(this.templatePath('local.yml'), path.join(folder, 'local.yml'));
     }
   }
 });

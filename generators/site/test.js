@@ -29,9 +29,11 @@ describe('clay:site', function () {
     });
 
     it('adds an index.js with basic route', function () {
-      var file = path.join(folder, 'index.js');
+      assert.file(path.join(folder, 'index.js'));
+    });
 
-      assert.file(file);
+    it('adds an local.yml with host', function () {
+      assert.file(path.join(folder, 'local.yml'));
     });
   });
 });
