@@ -1,6 +1,6 @@
 {
   "name": "generator-clay",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generate Clay instances, sites, and components",
   "files": [
     "generators/app",
