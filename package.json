@@ -3,9 +3,9 @@
   "version": "0.1.1",
   "description": "Generate Clay instances, sites, and components",
   "files": [
-    "app",
-    "component",
-    "site"
+    "generators/app",
+    "generators/component",
+    "generators/site"
   ],
   "scripts": {
     "lint": "node_modules/.bin/eslint generators/**/*.js",
