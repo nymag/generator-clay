@@ -16,7 +16,8 @@
     "url": "git+https://github.com/nymag/generator-clay.git"
   },
   "keywords": [
-    "yeoman-generator clay"
+    "yeoman-generator",
+    "clay"
   ],
   "author": "New York Media",
   "license": "MIT",
