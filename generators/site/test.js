@@ -15,6 +15,7 @@ function runGenerator(options, done) {
   helpers.run(path.join(__dirname, 'index.js'))
     .withArguments(['foo'])
     .withOptions(options)
+    .withPrompts({ name: 'Foo Blog', host: 'foo.com', path: '/bar' })
     .on('end', done);
 }
 
@@ -32,8 +33,23 @@ describe('clay:site', function () {
       assert.file(path.join(folder, 'index.js'));
     });
 
-    it('adds an local.yml with host', function () {
-      assert.file(path.join(folder, 'local.yml'));
+    it('adds an local.yml with localhost', function () {
+      var file = path.join(folder, 'local.yml');
+
+      assert.file(file);
+      assert.fileContent(file, 'host: localhost');
+    });
+
+    it('adds config.yml with values from prompt', function () {
+      var file = path.join(folder, 'config.yml');
+
+      assert.file(file);
+      assert.fileContent(file, 'name: Foo Blog');
+      assert.fileContent(file, 'host: foo.com');
+      assert.fileContent(file, 'path: /bar');
+      // added automatically
+      assert.fileContent(file, 'assetDir: public');
+      assert.fileContent(file, 'assetPath: /bar');
     });
   });
 });

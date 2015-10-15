@@ -112,7 +112,7 @@ module.exports = generators.NamedBase.extend({
         assetPath: config.path
       });
 
-      console.log(config);
+      this.fs.copyTpl(this.templatePath('config.yml'), path.join(folder, 'config.yml'), config);
     }
   }
 });
