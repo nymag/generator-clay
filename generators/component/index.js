@@ -6,7 +6,8 @@ var generators = require('yeoman-generator'),
   _ = require('lodash'),
   path = require('path'),
   mkdirp = require('mkdirp'),
-  tags = require('./tags.json');
+  tagsHash = require('./tags.json'),
+  viewportsHash = require('./viewports.json');
 
 module.exports = generators.NamedBase.extend({
   constructor: function () {
@@ -16,6 +17,12 @@ module.exports = generators.NamedBase.extend({
     this.option('tag');
     this.tag = this.options.tag ? this.options.tag : 'section';
     // default tag to section if not specified
+
+    // --viewports option
+    this.option('viewports');
+    this.viewports = this.options.viewports ? this.options.viewports.split(',') : [];
+    // viewports defaults to empty array if not specified
+    // note: it will ALWAYS create an all.css and print.css
   },
 
   initializing: {
@@ -104,7 +111,7 @@ module.exports = generators.NamedBase.extend({
       });
     },
 
-    createStyles: function () {
+    createDefaultStyles: function () {
       // create all.css and print.css
       var name = this.name,
         folder = this.destinationPath('components', name),
@@ -118,6 +125,20 @@ module.exports = generators.NamedBase.extend({
       }.bind(this));
     },
 
+    createViewportStyles: function () {
+      // create stylesheets for any viewports specified in the options
+      var name = this.name,
+        folder = this.destinationPath('components', name),
+        viewports = this.viewports;
+
+      _.each(viewports, function (viewport) {
+        // if it's a named viewport (e.g. 'mobile'), grab the values
+        viewport = viewportsHash[viewport] || viewport;
+
+        this.fs.copyTpl(this.templatePath('all.css'), path.join(folder, viewport + '.css'), { name: name });
+      }.bind(this));
+    },
+
     createTemplate: function () {
       var tpl = 'template',
         ext = this.tplExtension,
@@ -126,7 +147,7 @@ module.exports = generators.NamedBase.extend({
         folder = this.destinationPath('components', name);
 
       // we're gonna create the template with the tag specified (or the default)
-      this.log(chalk.grey(_.startCase(tag) + ': ' + tags[tag]));
+      this.log(chalk.grey(_.startCase(tag) + ': ' + tagsHash[tag]));
 
       if (ext === 'nunjucks' || ext === 'jade') {
         // if it's nunjucks or jade, copy over the template
