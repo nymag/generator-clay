@@ -11,7 +11,17 @@ You can use the component generator to generate new components in your clay repo
 yo clay:component <name>
 ```
 
-This will create a folder in `components/` with the name of your component, and will also add `all.css`, `print.css`, and a template of your choosing.
+This will create a folder in `components/` with the name of your component, and will also add some files:
+
+* `all.css`
+* `print.css` (with `display: none` by default)
+* `template.<lang>` where `<lang>` is the language of your choice
+* `bootstrap.yml`
+* `schema.yml`
+
+If you select nunjucks or jade, the template will have a tag (if specified), a class with your component's name, and the `data-uri` attribute used by kiln.
+
+The bootstrap and schema will have fields (text by default) that you've specified.
 
 _Note: Your template language choice will be stored as the default the next time you run this generator, saving you time when creating multiple components._
 
