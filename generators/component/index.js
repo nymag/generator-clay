@@ -88,6 +88,53 @@ module.exports = generators.NamedBase.extend({
         this.tplExtension = answers.templateLang !== 'other' ? answers.templateLang : answers.customTemplateLang;
         done();
       }.bind(this));
+    },
+
+    getFields: function () {
+      var done = this.async(),
+        fields = [],
+        addField, addMoreFields, continueFn;
+
+      // describe the field you want
+      addField = {
+        type: 'input',
+        name: 'fieldName',
+        message: 'Input fields name (in camelCase)',
+        validate: function (input) {
+          return input === _.camelCase(input) ? true : 'Please use camelCase for your field name';
+        }
+      };
+
+      // keep adding fields?
+      addMoreFields = {
+        type: 'confirm',
+        name: 'addFields',
+        message: 'Add more fields'
+      };
+
+      // if they want to keep adding fields, recurse
+      continueFn = function (answers) {
+        if (answers.fieldName) {
+          // add field they just defined to the fields array
+          fields.push(answers.fieldName);
+        }
+
+        if (answers.addFields) {
+          // keep going
+          this.prompt([addField, addMoreFields], continueFn.bind(this));
+        } else {
+          // finish up
+          this.fields = fields;
+          done();
+        }
+      }.bind(this);
+
+      this.prompt([{
+        type: 'confirm',
+        name: 'addFields',
+        message: 'Add fields to generate a bootstrap and schema',
+        default: true
+      }], continueFn.bind(this));
     }
   },
 
@@ -156,6 +203,16 @@ module.exports = generators.NamedBase.extend({
         // otherwise create a blank file with that extension
         this.fs.write(path.join(folder, tpl + '.' + ext), '');
       }
+    },
+
+    createFields: function () {
+      var fields = this.fields,
+        name = this.name,
+        folder = this.destinationPath('components', name);
+
+      log(chalk.grey('Fields: ' + fields.join(', ')));
+
+      
     }
   }
 });
