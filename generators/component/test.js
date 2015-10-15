@@ -16,7 +16,7 @@ function runGenerator(options, done) {
   helpers.run(path.join(__dirname, 'index.js'))
     .withArguments(['foo'])
     .withOptions(options)
-    .withPrompts({ templateLang: 'nunjucks' })
+    .withPrompts({ templateLang: 'nunjucks', addFields: false })
     .on('end', done);
 }
 
@@ -116,6 +116,23 @@ describe('clay:component', function () {
         assert.file(path.join(folder, '600+.css'));
         done();
       });
+    });
+  });
+
+  describe('bootstrap and schema generation', function () {
+    before(function (done) {
+      helpers.run(path.join(__dirname, 'index.js'))
+        .withArguments(['foo'])
+        .withPrompts({ templateLang: 'nunjucks', addFields: false, fieldName: 'headline' })
+        .on('end', done);
+    });
+
+    it('generates schema.yml', function () {
+      assert.file(path.join(folder, 'schema.yml'));
+    });
+
+    it('generates bootstrap.yml', function () {
+      assert.file(path.join(folder, 'bootstrap.yml'));
     });
   });
 });
