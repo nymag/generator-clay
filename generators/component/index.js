@@ -208,11 +208,17 @@ module.exports = generators.NamedBase.extend({
     createFields: function () {
       var fields = this.fields,
         name = this.name,
-        folder = this.destinationPath('components', name);
+        folder = this.destinationPath('components', name),
+        log = this.log;
 
-      log(chalk.grey('Fields: ' + fields.join(', ')));
+      if (fields.length) {
+        log(chalk.grey('Fields: ' + fields.join(', ')));
+      } else {
+        log(chalk.grey('No fields, Creating blank schema and bootstrap'));
+      }
 
-      
+      this.fs.copyTpl(this.templatePath('schema.yml'), path.join(folder, 'schema.yml'), { name: name, fields: fields });
+      this.fs.copyTpl(this.templatePath('bootstrap.yml'), path.join(folder, 'bootstrap.yml'), { name: name, fields: fields });
     }
   }
 });
