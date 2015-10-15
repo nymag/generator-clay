@@ -1,0 +1,7 @@
+# configuration generated from yeoman
+name: <%= name %>
+host: <%= host %>
+path: <%= path %>
+assetDir: <%= assetDir %>
+assetPath: <%= assetPath %>
+# add any other configuration below
