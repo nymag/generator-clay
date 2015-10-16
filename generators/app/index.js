@@ -8,9 +8,15 @@ module.exports = generators.Base.extend({
     generators.Base.apply(this, arguments);
   },
 
+  copying: function () {
+    this.copy('_gitignore', '.' + 'gitignore');
+    this.copy('_csscomb.json', '.' + 'csscomb.json');
+    this.copy('_eslintrc', '.' + 'eslintrc');
+  },
+
   notImplemented: function () {
     this.log(chalk.red('Clay instance generator has not been implemented yet.'));
     this.log(chalk.bgRed.bold('It\'s coming soon!'));
-    process.exit(1);
+    // process.exit(1);
   }
 });
