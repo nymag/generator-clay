@@ -30,6 +30,10 @@ module.exports = generators.Base.extend({
         this.destinationPath('csscomb.json')
       );
     }
-  }
+  },
 
+  // Run npm install
+  install: function () {
+    this.npmInstall();
+  }
 });
