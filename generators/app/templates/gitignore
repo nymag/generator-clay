@@ -18,6 +18,7 @@ Dockerfile
 
 # config (get local from someone on your team if you need it)
 local.yaml
+local.yml
 
 # public folder (compiled assets)
 public
