@@ -14,6 +14,10 @@ module.exports = generators.Base.extend({
         this.templatePath('_package.json'),
         this.destinationPath('package.json')
       );
+      this.fs.copy(
+        this.templatePath('_app.js'),
+        this.destinationPath('app.js')
+      );
     },
 
     projectfiles: function () {
