@@ -3,9 +3,26 @@ A Yeoman generator for Clay
 
 [![Circle CI](https://circleci.com/gh/nymag/generator-clay.svg?style=svg&circle-token=a4c35eb0cccf099844c822d0ac36e8495bd2d1d5)](https://circleci.com/gh/nymag/generator-clay)
 
+## Clay Instance Generator
+You can use the main generator to generate an new clay **instance**.
+
+```
+yo clay
+```
+
+This will add the following files:
+
+* `app.js`
+* `package.json`
+
+
+* `.gitignore`
+* `.csscomb.json`
+* `.eslintrc`
+
 ## Component Generator
 
-You can use the component generator to generate new components in your clay repo.
+You can use the component generator to generate new **components** in your clay repo.
 
 ```
 yo clay:component <name>
