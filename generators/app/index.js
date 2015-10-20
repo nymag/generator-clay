@@ -22,6 +22,15 @@ module.exports = generators.Base.extend({
           appname: this.appname
         }
       );
+
+      this.fs.copyTpl(
+        this.templatePath('README.md'),
+        this.destinationPath('README.md'),
+        {
+          appname: this.appname
+        }
+      );
+
       this.fs.copy(
         this.templatePath('_app.js'),
         this.destinationPath('app.js')
