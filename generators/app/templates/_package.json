@@ -1,6 +1,8 @@
 {
-  "name": "package",
+  "name": "<%= appname %>",
   "version": "1.0.0",
+  "description": "Clay",
+  "license": "MIT",
   "main": "app.js",
   "scripts": {
     "test": "node_modules/.bin/eslint app.js components sites gulp filters && node_modules/.bin/mocha",
