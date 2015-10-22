@@ -1,6 +1,7 @@
+'use strict';
 
 var chalk = require('chalk'),
-    _ = require('lodash');
+  _ = require('lodash');
 
 module.exports = function (packageJson) {
   var prompts = [
@@ -22,4 +23,4 @@ module.exports = function (packageJson) {
   ];
 
   return prompts;
-}
+};

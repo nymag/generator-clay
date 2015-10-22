@@ -1,8 +1,8 @@
 'use strict';
 
 var generators = require('yeoman-generator'),
-    chalk = require('chalk'),
-    _ = require('lodash');
+  chalk = require('chalk'),
+  _ = require('lodash');
 
 module.exports = generators.Base.extend({
   constructor: function () {
@@ -20,7 +20,7 @@ module.exports = generators.Base.extend({
 
   prompting: function () {
     var done = this.async(),
-        prompts = require('./prompts.js')(this.packageJson);
+      prompts = require('./prompts.js')(this.packageJson);
 
     this.prompt(prompts, function (props) {
       this.props = props;
@@ -32,7 +32,9 @@ module.exports = generators.Base.extend({
 
   writing: {
     packageJson: function () {
-      var packageJsonOrder = ['name','version','description','license','main','scripts','keywords','repository','dependencies','devDependencies'];
+      var currentPackageJson,
+          newPackageJson = {},
+          packageJsonOrder = ['name','version','description','license','main','scripts','keywords','repository','dependencies','devDependencies'];
 
       // Sets a field in package.json if it doesn't exist
       this.setPackageJsonField = function (field) {
@@ -50,8 +52,7 @@ module.exports = generators.Base.extend({
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
 
-        var currentPackageJson = this.packageJson;
-        var newPackageJson = {};
+        currentPackageJson = this.packageJson;
 
         // Re-order fiels in pre-specified order
         _.each(packageJsonOrder, function (key) {
