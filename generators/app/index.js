@@ -33,8 +33,8 @@ module.exports = generators.Base.extend({
   writing: {
     packageJson: function () {
       var currentPackageJson,
-          newPackageJson = {},
-          packageJsonOrder = ['name','version','description','license','main','scripts','keywords','repository','dependencies','devDependencies'];
+        newPackageJson = {},
+        packageJsonOrder = ['name','version','description','license','main','scripts','keywords','repository','dependencies','devDependencies'];
 
       // Sets a field in package.json if it doesn't exist
       this.setPackageJsonField = function (field) {
