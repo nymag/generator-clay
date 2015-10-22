@@ -1,7 +1,8 @@
 'use strict';
 
 var generators = require('yeoman-generator'),
-  chalk = require('chalk');
+    chalk = require('chalk'),
+    _ = require('lodash');
 
 module.exports = generators.Base.extend({
   constructor: function () {
@@ -11,6 +12,22 @@ module.exports = generators.Base.extend({
     // Store user-inputed appname
     this.argument('appname', { type: String, required: false });
     this.appname = this.app_name || this.appname;
+  },
+
+  initializing: function () {
+    this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
+  },
+
+  prompting: function () {
+    var done = this.async(),
+        prompts = require('./prompts.js')(this.packageJson);
+
+    this.prompt(prompts, function (props) {
+      this.props = props;
+
+      done();
+    }.bind(this));
+
   },
 
   writing: {
