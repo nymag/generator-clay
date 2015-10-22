@@ -31,15 +31,50 @@ module.exports = generators.Base.extend({
   },
 
   writing: {
-    app: function () {
-      this.fs.copyTpl(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json'),
-        {
-          appname: this.appname
-        }
-      );
+    packageJson: function () {
+      var packageJsonOrder = ['name','version','description','license','main','scripts','keywords','repository','dependencies','devDependencies'];
 
+      // Sets a field in package.json if it doesn't exist
+      this.setPackageJsonField = function (field) {
+        if (!this.packageJson[field]) {
+          this.packageJson[field] = this.props[field];
+        } else {
+          console.log(chalk.blue(field) + chalk.blue.bold(' exists: ') + this.packageJson[field]);
+        }
+      };
+
+      if (this.fs.exists(this.destinationPath('package.json'))) {
+        this.log(chalk.yellow('package.json') + ' found. Revising it.');
+        this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
+
+        this.setPackageJsonField('description');
+        this.setPackageJsonField('keywords');
+
+        var currentPackageJson = this.packageJson;
+        var newPackageJson = {};
+
+        // Re-order fiels in pre-specified order
+        _.each(packageJsonOrder, function (key) {
+          newPackageJson[key] = currentPackageJson[key];
+        });
+
+        this.fs.writeJSON('package.json', newPackageJson);
+
+      } else {
+        this.log('No ' + chalk.red('package.json') + ' found. Creating one.');
+        this.fs.copyTpl(
+          this.templatePath('_package.json'),
+          this.destinationPath('package.json'),
+          {
+            appname: this.appname,
+            description: this.props.description,
+            keywords: this.props.keywords
+          }
+        );
+      }
+    },
+
+    app: function () {
       this.fs.copyTpl(
         this.templatePath('README.md'),
         this.destinationPath('README.md'),
