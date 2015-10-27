@@ -2,6 +2,7 @@
 
 var generators = require('yeoman-generator'),
   chalk = require('chalk'),
+  mkdirp = require('mkdirp'),
   _ = require('lodash');
 
 module.exports = generators.Base.extend({
@@ -110,8 +111,22 @@ module.exports = generators.Base.extend({
   },
 
   // Run npm install
-  install: function () {
-    this.npmInstall();
-    this.log('Your app ' + chalk.yellow.bold(this.appname) + ' was created.');
+  install: {
+    gulp: function () {
+      var gulpDependencies = require('./gulpdeps.json');
+
+      // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
+      gulpDependencies =  _.mapKeys(gulpDependencies, function(moduleVerison, moduleName) {
+        return moduleName + moduleVerison.replace('\^','@');
+      });
+
+      this.npmInstall(_.keys(gulpDependencies), { 'save': true });
+      this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
+    },
+
+    main: function () {
+      this.npmInstall();
+      this.log('Your app ' + chalk.yellow.bold(this.appname) + ' was created.');
+    }
   }
 });
