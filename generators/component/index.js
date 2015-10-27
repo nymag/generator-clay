@@ -35,9 +35,7 @@ module.exports = generators.NamedBase.extend({
     checkComponent: function () {
       var name = this.name,
         isNPM = this.isNPM,
-        hasComponentFolder = isNPM ?
-          fs.existsSync(this.destinationPath('clay-' + name)) : // check in current directory
-          fs.existsSync(this.destinationPath('components', name)), // check in components folder
+        hasComponentFolder = fs.existsSync(this.destinationPath('components', name)),
         // note: this.fs.exists() doesn't work for directories, hence fs.existsSync()
         hasNpmComponent;
 
@@ -50,14 +48,10 @@ module.exports = generators.NamedBase.extend({
         hasNpmComponent = false;
       }
 
-      if (hasComponentFolder) {
-        if (isNPM) {
-          this.log(chalk.red('Component already exists at clay-' + name));
-        } else {
-          this.log(chalk.red('Component already exists at components/' + name));
-        }
+      if (!isNPM && hasComponentFolder) {
+        this.log(chalk.red('Component already exists at components/' + name));
         process.exit(1);
-      } else if (hasNpmComponent) {
+      } else if (!isNPM && hasNpmComponent) {
         this.log(chalk.red('Component with a similar name was installed via npm: clay-' + name));
         process.exit(1);
       }
@@ -158,7 +152,7 @@ module.exports = generators.NamedBase.extend({
 
     // figure out what folder we should write to
     this.folder = isNPM ?
-      this.destinationPath('clay-' + name) :
+      this.destinationPath() :
       this.destinationPath('components', name);
 
     // folderName is used for the folder if it's an npm component,

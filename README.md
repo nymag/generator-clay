@@ -87,7 +87,7 @@ This is useful if you want to quickly scaffold components for release on npm. Th
 yo clay:component <name> --npm
 ```
 
-Note: It will create a `clay-<name>` folder in the current directory, rather than a `components/<name>` folder.
+Note: It will create all files in the current directory, rather than in a `components/<name>` folder.
 
 ## Site Generator
 
