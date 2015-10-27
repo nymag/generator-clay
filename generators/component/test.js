@@ -182,6 +182,13 @@ describe('clay:component', function () {
       assert.fileContent(file, /"name": "((.+?)\/)?clay-(.+?)"/);
     });
 
+    it('adds style to package.json', function () {
+      var file = path.join(npmFolder, 'package.json');
+
+      assert.file(file);
+      assert.fileContent(file, /"style": "\*\.css"/);
+    });
+
     // it('creates readme if it doesn\'t exist', function () {
     //   var file = path.join(npmFolder, 'package.json');
     //
