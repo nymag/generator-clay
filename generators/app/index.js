@@ -76,6 +76,21 @@ module.exports = generators.Base.extend({
       }
     },
 
+    gulp: function () {
+      this.fs.copy(
+        this.templatePath('_gulpfile.js'),
+        this.destinationPath('gulpfile.js')
+      );
+      this.log('Generating ' + chalk.yellow.bold('gulpfile.js'));
+
+      // Creates gulp/tasks & gulp/utils
+      this.directory(
+        this.templatePath('gulp'),
+        this.destinationPath('gulp')
+      );
+      this.log('Generating ' + chalk.yellow.bold('gulp folders.'));
+    },
+
     app: function () {
       this.fs.copyTpl(
         this.templatePath('README.md'),
@@ -116,7 +131,7 @@ module.exports = generators.Base.extend({
       var gulpDependencies = require('./gulpdeps.json');
 
       // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
-      gulpDependencies =  _.mapKeys(gulpDependencies, function(moduleVerison, moduleName) {
+      gulpDependencies =  _.mapKeys(gulpDependencies, function (moduleVerison, moduleName) {
         return moduleName + moduleVerison.replace('\^','@');
       });
 
