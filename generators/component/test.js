@@ -168,19 +168,19 @@ describe('clay:component', function () {
       assert.fileContent(file, /class="clay-foo"/);
     });
 
-    // it('adds template to package.json', function () {
-    //   var file = path.join(npmFolder, 'package.json');
-    //
-    //   assert.file(file);
-    //   assert.fileContent(file, /"template": "template.nunjucks"/);
-    // });
-    //
-    // it('adds name to package.json', function () {
-    //   var file = path.join(npmFolder, 'package.json');
-    //
-    //   assert.file(file);
-    //   assert.fileContent(file, /"name": "((.+?)\/)?clay-(.+?)"/);
-    // });
+    it('adds template to package.json', function () {
+      var file = path.join(npmFolder, 'package.json');
+
+      assert.file(file);
+      assert.fileContent(file, /"template": "template.nunjucks"/);
+    });
+
+    it('adds name to package.json', function () {
+      var file = path.join(npmFolder, 'package.json');
+
+      assert.file(file);
+      assert.fileContent(file, /"name": "((.+?)\/)?clay-(.+?)"/);
+    });
 
     // it('creates readme if it doesn\'t exist', function () {
     //   var file = path.join(npmFolder, 'package.json');

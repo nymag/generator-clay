@@ -261,16 +261,17 @@ module.exports = generators.NamedBase.extend({
         folderName = isNPM ? 'clay-' + name : name,
         ext = this.tplExtension,
         filePath = path.join(folder, 'package.json'),
-        pkg;
-
-      if (this.isNPM) {
-        pkg = this.fs.readJSON(filePath);
-
-        _.defaults(pkg, {
+        defaults = {
           name: folderName,
           template: 'template.' + ext,
           style: '*.css'
-        });
+        },
+        pkg;
+
+      if (isNPM) {
+        pkg = this.fs.readJSON(filePath, defaults);
+
+        _.defaults(pkg, defaults);
 
         this.fs.writeJSON(filePath, pkg);
       }
