@@ -89,6 +89,16 @@ yo clay:component <name> --viewports 0-300,300-600,600+,1200+
 1200+.css
 ```
 
+### --npm
+
+This is useful if you want to quickly scaffold components for release on npm. Their name gets prepended with `clay-`, and they additionally get a `package.json`, `README.md`, and `.eslintrc`. All options and prompts for internal components are available for npm components.
+
+```
+yo clay:component <name> --npm
+```
+
+Note: It will create all files in the current directory, rather than in a `components/<name>` folder.
+
 ## Site Generator
 
 You can use the site generator to generate new sites in your clay repo.
