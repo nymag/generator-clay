@@ -1,4 +1,4 @@
-<<%= tag %> data-uri="{{ _ref or _self }}" class="<%= name %>">
+<<%= tag %> data-uri="{{ _ref or _self }}" class="<%= folderName %>">
 
   {# add your component internals here #}
 

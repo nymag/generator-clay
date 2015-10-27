@@ -153,20 +153,24 @@ module.exports = generators.NamedBase.extend({
 
   // getFolder runs after prompts, but before writing
   getFolder: function () {
-    var name = this.name;
+    var name = this.name,
+      isNPM = this.isNPM;
 
     // figure out what folder we should write to
-    this.folder = this.isNPM ?
+    this.folder = isNPM ?
       this.destinationPath('clay-' + name) :
       this.destinationPath('components', name);
+
+    // folderName is used for the folder if it's an npm component,
+    // as well as the class name
+    this.folderName = isNPM ? 'clay-' + name : name;
   },
 
   writing: {
     createFolder: function () {
       var done = this.async(),
         log = this.log,
-        name = this.name,
-        folderName = this.isNPM ? 'clay-' + name : name,
+        folderName = this.folderName,
         folder = this.folder;
 
       // create components/<name> folder (creating the components folder if it doesn't exist)
@@ -186,7 +190,7 @@ module.exports = generators.NamedBase.extend({
 
     createDefaultStyles: function () {
       // create all.css and print.css
-      var name = this.name,
+      var folderName = this.folderName,
         folder = this.folder,
         styles = [
           'all.css',
@@ -194,13 +198,13 @@ module.exports = generators.NamedBase.extend({
         ];
 
       _.each(styles, function (style) {
-        this.fs.copyTpl(this.templatePath(style), path.join(folder, style), { name: name });
+        this.fs.copyTpl(this.templatePath(style), path.join(folder, style), { folderName: folderName });
       }.bind(this));
     },
 
     createViewportStyles: function () {
       // create stylesheets for any viewports specified in the options
-      var name = this.name,
+      var folderName = this.folderName,
         folder = this.folder,
         viewports = this.viewports;
 
@@ -208,7 +212,7 @@ module.exports = generators.NamedBase.extend({
         // if it's a named viewport (e.g. 'mobile'), grab the values
         viewport = viewportsHash[viewport] || viewport;
 
-        this.fs.copyTpl(this.templatePath('all.css'), path.join(folder, viewport + '.css'), { name: name });
+        this.fs.copyTpl(this.templatePath('all.css'), path.join(folder, viewport + '.css'), { folderName: folderName });
       }.bind(this));
     },
 
@@ -216,7 +220,7 @@ module.exports = generators.NamedBase.extend({
       var tpl = 'template',
         ext = this.tplExtension,
         tag = this.tag,
-        name = this.name,
+        folderName = this.folderName,
         folder = this.folder;
 
       // we're gonna create the template with the tag specified (or the default)
@@ -224,7 +228,10 @@ module.exports = generators.NamedBase.extend({
 
       if (ext === 'nunjucks' || ext === 'jade') {
         // if it's nunjucks or jade, copy over the template
-        this.fs.copyTpl(this.templatePath(tpl + '.' + ext), path.join(folder, tpl + '.' + ext), { name: name, tag: tag });
+        this.fs.copyTpl(this.templatePath(tpl + '.' + ext), path.join(folder, tpl + '.' + ext), {
+          folderName: folderName,
+          tag: tag
+        });
       } else {
         // otherwise create a blank file with that extension
         this.fs.write(path.join(folder, tpl + '.' + ext), '');
@@ -233,7 +240,7 @@ module.exports = generators.NamedBase.extend({
 
     createFields: function () {
       var fields = this.fields,
-        name = this.name,
+        folderName = this.folderName,
         folder = this.folder,
         log = this.log;
 
@@ -243,8 +250,30 @@ module.exports = generators.NamedBase.extend({
         log(chalk.grey('No fields, Creating blank schema and bootstrap'));
       }
 
-      this.fs.copyTpl(this.templatePath('schema.yml'), path.join(folder, 'schema.yml'), { name: name, fields: fields });
-      this.fs.copyTpl(this.templatePath('bootstrap.yml'), path.join(folder, 'bootstrap.yml'), { name: name, fields: fields });
+      this.fs.copyTpl(this.templatePath('schema.yml'), path.join(folder, 'schema.yml'), { fields: fields });
+      this.fs.copyTpl(this.templatePath('bootstrap.yml'), path.join(folder, 'bootstrap.yml'), { folderName: folderName, fields: fields });
+    },
+
+    updatePackage: function () {
+      var isNPM = this.isNPM,
+        folder = this.folder,
+        name = this.name,
+        folderName = isNPM ? 'clay-' + name : name,
+        ext = this.tplExtension,
+        filePath = path.join(folder, 'package.json'),
+        pkg;
+
+      if (this.isNPM) {
+        pkg = this.fs.readJSON(filePath);
+
+        _.defaults(pkg, {
+          name: folderName,
+          template: 'template.' + ext,
+          style: '*.css'
+        });
+
+        this.fs.writeJSON(filePath, pkg);
+      }
     }
   }
 });

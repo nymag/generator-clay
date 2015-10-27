@@ -151,21 +151,63 @@ describe('clay:component', function () {
       var file = path.join(npmFolder, 'all.css');
 
       assert.file(file);
-      assert.fileContent(file, /^\.foo \{/);
+      assert.fileContent(file, /^\.clay-foo \{/);
     });
 
     it('adds a print.css stylesheet', function () {
       var file = path.join(npmFolder, 'print.css');
 
       assert.file(file);
-      assert.fileContent(file, /^\.foo \{/);
+      assert.fileContent(file, /^\.clay-foo \{/);
     });
 
     it('adds a template', function () {
       var file = path.join(npmFolder, 'template.nunjucks');
 
       assert.file(file);
-      assert.fileContent(file, /class="foo"/);
+      assert.fileContent(file, /class="clay-foo"/);
     });
+
+    // it('adds template to package.json', function () {
+    //   var file = path.join(npmFolder, 'package.json');
+    //
+    //   assert.file(file);
+    //   assert.fileContent(file, /"template": "template.nunjucks"/);
+    // });
+    //
+    // it('adds name to package.json', function () {
+    //   var file = path.join(npmFolder, 'package.json');
+    //
+    //   assert.file(file);
+    //   assert.fileContent(file, /"name": "((.+?)\/)?clay-(.+?)"/);
+    // });
+
+    // it('creates readme if it doesn\'t exist', function () {
+    //   var file = path.join(npmFolder, 'package.json');
+    //
+    //   assert.file(file);
+    //   assert.fileContent(file, /"template": "template.nunjucks"/);
+    // });
+    //
+    // it('creates eslintrc', function () {
+    //   var file = path.join(npmFolder, 'package.json');
+    //
+    //   assert.file(file);
+    //   assert.fileContent(file, /"template": "template.nunjucks"/);
+    // });
+    //
+    // it('creates .gitignore if it doesn\'t exist', function () {
+    //   var file = path.join(npmFolder, 'package.json');
+    //
+    //   assert.file(file);
+    //   assert.fileContent(file, /"template": "template.nunjucks"/);
+    // });
+    //
+    // it('creates license if it doesn\'t exist', function () {
+    //   var file = path.join(npmFolder, 'package.json');
+    //
+    //   assert.file(file);
+    //   assert.fileContent(file, /"template": "template.nunjucks"/);
+    // });
   });
 });
