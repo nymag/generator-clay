@@ -135,4 +135,37 @@ describe('clay:component', function () {
       assert.file(path.join(folder, 'bootstrap.yml'));
     });
   });
+
+  describe('--npm', function () {
+    var npmFolder = 'clay-foo';
+
+    before(function (done) {
+      runGenerator({ npm: true }, done);
+    });
+
+    it('generates component in current folder', function () {
+      assert.file(npmFolder);
+    });
+
+    it('adds an all.css stylesheet', function () {
+      var file = path.join(npmFolder, 'all.css');
+
+      assert.file(file);
+      assert.fileContent(file, /^\.foo \{/);
+    });
+
+    it('adds a print.css stylesheet', function () {
+      var file = path.join(npmFolder, 'print.css');
+
+      assert.file(file);
+      assert.fileContent(file, /^\.foo \{/);
+    });
+
+    it('adds a template', function () {
+      var file = path.join(npmFolder, 'template.nunjucks');
+
+      assert.file(file);
+      assert.fileContent(file, /class="foo"/);
+    });
+  });
 });

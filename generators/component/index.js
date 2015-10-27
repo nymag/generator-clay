@@ -23,13 +23,22 @@ module.exports = generators.NamedBase.extend({
     this.viewports = this.options.viewports ? this.options.viewports.split(',') : [];
     // viewports defaults to empty array if not specified
     // note: it will ALWAYS create an all.css and print.css
+
+    // --npm option, generates an npm component in the current directory
+    // rather than putting it into components/
+    // note: 'clay-' is automatically prepended to component name
+    this.option('npm');
+    this.isNPM = !!this.options.npm;
   },
 
   initializing: {
     checkComponent: function () {
       var name = this.name,
-        hasComponentFolder = fs.existsSync(this.destinationPath('components', name)),
-        // note: this.fs.exists() doesn't work for directories
+        isNPM = this.isNPM,
+        hasComponentFolder = isNPM ?
+          fs.existsSync(this.destinationPath('clay-' + name)) : // check in current directory
+          fs.existsSync(this.destinationPath('components', name)), // check in components folder
+        // note: this.fs.exists() doesn't work for directories, hence fs.existsSync()
         hasNpmComponent;
 
       try {
@@ -42,7 +51,11 @@ module.exports = generators.NamedBase.extend({
       }
 
       if (hasComponentFolder) {
-        this.log(chalk.red('Component already exists at components/' + name));
+        if (isNPM) {
+          this.log(chalk.red('Component already exists at clay-' + name));
+        } else {
+          this.log(chalk.red('Component already exists at components/' + name));
+        }
         process.exit(1);
       } else if (hasNpmComponent) {
         this.log(chalk.red('Component with a similar name was installed via npm: clay-' + name));
@@ -138,20 +151,33 @@ module.exports = generators.NamedBase.extend({
     }
   },
 
+  // getFolder runs after prompts, but before writing
+  getFolder: function () {
+    var name = this.name;
+
+    // figure out what folder we should write to
+    this.folder = this.isNPM ?
+      this.destinationPath('clay-' + name) :
+      this.destinationPath('components', name);
+  },
+
   writing: {
     createFolder: function () {
       var done = this.async(),
         log = this.log,
-        name = this.name;
+        name = this.name,
+        folderName = this.isNPM ? 'clay-' + name : name,
+        folder = this.folder;
 
       // create components/<name> folder (creating the components folder if it doesn't exist)
-      mkdirp(this.destinationPath('components', this.name), function (err) {
+      // or create clay-<name> folder if it's an npm component
+      mkdirp(folder, function (err) {
         if (err) {
-          log(chalk.red(err.message));
+          log(chalk.red(err.message, err.stack));
           process.exit(0);
         } else {
           log(chalk.dim.blue('-----------------------'));
-          log(chalk.bold('Generating new component: ') + chalk.bold.blue(name));
+          log(chalk.bold('Generating new component: ') + chalk.bold.blue(folderName));
         }
 
         done();
@@ -161,7 +187,7 @@ module.exports = generators.NamedBase.extend({
     createDefaultStyles: function () {
       // create all.css and print.css
       var name = this.name,
-        folder = this.destinationPath('components', name),
+        folder = this.folder,
         styles = [
           'all.css',
           'print.css'
@@ -175,7 +201,7 @@ module.exports = generators.NamedBase.extend({
     createViewportStyles: function () {
       // create stylesheets for any viewports specified in the options
       var name = this.name,
-        folder = this.destinationPath('components', name),
+        folder = this.folder,
         viewports = this.viewports;
 
       _.each(viewports, function (viewport) {
@@ -191,7 +217,7 @@ module.exports = generators.NamedBase.extend({
         ext = this.tplExtension,
         tag = this.tag,
         name = this.name,
-        folder = this.destinationPath('components', name);
+        folder = this.folder;
 
       // we're gonna create the template with the tag specified (or the default)
       this.log(chalk.grey(_.startCase(tag) + ': ' + tagsHash[tag]));
@@ -208,7 +234,7 @@ module.exports = generators.NamedBase.extend({
     createFields: function () {
       var fields = this.fields,
         name = this.name,
-        folder = this.destinationPath('components', name),
+        folder = this.folder,
         log = this.log;
 
       if (fields.length) {
