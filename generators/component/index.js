@@ -257,8 +257,7 @@ module.exports = generators.NamedBase.extend({
     updatePackage: function () {
       var isNPM = this.isNPM,
         folder = this.folder,
-        name = this.name,
-        folderName = isNPM ? 'clay-' + name : name,
+        folderName = this.folderName,
         ext = this.tplExtension,
         filePath = path.join(folder, 'package.json'),
         defaults = {
@@ -274,6 +273,19 @@ module.exports = generators.NamedBase.extend({
         _.defaults(pkg, defaults);
 
         this.fs.writeJSON(filePath, pkg);
+      }
+    },
+
+    addReadme: function () {
+      var isNPM = this.isNPM,
+        folder = this.folder,
+        folderName = this.folderName,
+        name = this.name,
+        readmePath = path.join(folder, 'README.md'),
+        hasReadme = this.fs.exists(readmePath);
+
+      if (isNPM && !hasReadme) {
+        this.fs.copyTpl(this.templatePath('README.md'), readmePath, { folderName: folderName, name: name });
       }
     }
   }
