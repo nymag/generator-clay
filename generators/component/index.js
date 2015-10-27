@@ -287,6 +287,17 @@ module.exports = generators.NamedBase.extend({
       if (isNPM && !hasReadme) {
         this.fs.copyTpl(this.templatePath('README.md'), readmePath, { folderName: folderName, name: name });
       }
+    },
+
+    addEslint: function () {
+      var isNPM = this.isNPM,
+        folder = this.folder,
+        eslintPath = path.join(folder, '.eslintrc'),
+        hasEslint = this.fs.exists(eslintPath);
+
+      if (isNPM && !hasEslint) {
+        this.fs.copy(this.templatePath('.eslintrc'), eslintPath);
+      }
     }
   }
 });

@@ -194,26 +194,9 @@ describe('clay:component', function () {
 
       assert.file(file);
     });
-    //
-    // it('creates eslintrc', function () {
-    //   var file = path.join(npmFolder, 'package.json');
-    //
-    //   assert.file(file);
-    //   assert.fileContent(file, /"template": "template.nunjucks"/);
-    // });
-    //
-    // it('creates .gitignore if it doesn\'t exist', function () {
-    //   var file = path.join(npmFolder, 'package.json');
-    //
-    //   assert.file(file);
-    //   assert.fileContent(file, /"template": "template.nunjucks"/);
-    // });
-    //
-    // it('creates license if it doesn\'t exist', function () {
-    //   var file = path.join(npmFolder, 'package.json');
-    //
-    //   assert.file(file);
-    //   assert.fileContent(file, /"template": "template.nunjucks"/);
-    // });
+
+    it('creates eslintrc', function () {
+      assert.file(path.join(npmFolder, '.eslintrc'));
+    });
   });
 });
