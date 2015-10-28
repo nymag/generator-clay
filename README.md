@@ -12,11 +12,21 @@ yo clay
 
 This will add the following files:
 
+### Main Files
 * `app.js`
 * `package.json`
+
+### Supplemental Files
 * `.gitignore`
 * `.csscomb.json`
 * `.eslintrc`
+
+### Gulp Files & Folders
+* `gulp/tasks`
+* `gulp/utils`
+* `gulpfile.js`
+
+At the end, the generator will run `npm install` & will append the specified **gulp dependencies** into your `package.json` file.
 
 ## Component Generator
 

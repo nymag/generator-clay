@@ -1,0 +1,18 @@
+{
+  "gulp": "^3.8.11",
+  "gulp-autoprefixer": "^2.1.0",
+  "gulp-browserify": "^0.5.1",
+  "gulp-changed": "^1.2.1",
+  "gulp-concat": "^2.6.0",
+  "gulp-cssmin": "^0.1.6",
+  "gulp-folder-changed": "^1.2",
+  "gulp-group-concat": "^1.1.5",
+  "gulp-ignore": "^1.2.1",
+  "gulp-newer": "^0.5.1",
+  "gulp-rename": "^1.2.2",
+  "gulp-sass": "^2.0",
+  "gulp-sourcemaps": "^1.5.2",
+  "gulp-uglify": "^1.2.0",
+  "responsive-filenames": "^1.0.3",
+  "require-dir": "^0.3.0"
+}
