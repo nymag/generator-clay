@@ -77,7 +77,21 @@ module.exports = generators.Base.extend({
     },
 
     createFolders: function () {
-      var folders = ['sites', 'components', 'behaviors', 'validators'];
+      var done = this.async(),
+        log = this.log,
+        folders = ['sites', 'components', 'behaviors', 'validators'];
+
+      // Create app folders
+      _.each(folders, function (name) {
+        mkdirp(name, function (err) {
+          if (err) {
+            log(chalk.red(err.message, err.stack));
+            process.exit(0);
+          }
+
+          done();
+        });
+      });
     },
 
     gulp: function () {
