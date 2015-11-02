@@ -2,6 +2,7 @@
 
 var generators = require('yeoman-generator'),
   chalk = require('chalk'),
+  mkdirp = require('mkdirp'),
   _ = require('lodash');
 
 module.exports = generators.Base.extend({
@@ -73,6 +74,10 @@ module.exports = generators.Base.extend({
           }
         );
       }
+    },
+
+    createFolders: function () {
+      var folders = ['sites', 'components', 'behaviors', 'validators'];
     },
 
     gulp: function () {
