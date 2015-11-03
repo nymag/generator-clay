@@ -42,7 +42,10 @@ module.exports = function (packageJson) {
       type:'checkbox',
       name:'folders',
       message:'\n\nWhich folders would you like to create?',
-      choices: folderList
+      choices: folderList,
+      when: function () {
+        return _.size(_.where(folderList, {disabled: false})) > 0;
+      }
     },
   ];
 

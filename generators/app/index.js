@@ -81,7 +81,9 @@ module.exports = generators.Base.extend({
         log = this.log,
         folders = this.props.folders;
 
-      log('Generating ' + chalk.blue(folders));
+      if (folders) {
+        log('Generating ' + chalk.blue(folders));
+      }
 
       // Create app folders
       _.each(folders, function (name) {
@@ -94,6 +96,7 @@ module.exports = generators.Base.extend({
           done();
         });
       });
+
     },
 
     gulp: function () {
