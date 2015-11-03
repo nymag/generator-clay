@@ -1,6 +1,7 @@
 'use strict';
 
 var chalk = require('chalk'),
+  findup = require('findup-sync'),
   _ = require('lodash');
 
 module.exports = function (packageJson) {
@@ -26,24 +27,24 @@ module.exports = function (packageJson) {
       message:'\n\nWhich folders would you like to create?',
       choices:[
         {
-          name:'Sites Folder',
-          value:'sites',
-          checked:true
+          name: 'Sites Folder',
+          value: 'sites',
+          checked: !findup('sites')
         },
         {
-          name:'Components Folder',
-          value:'components',
-          checked:true
+          name: 'Components Folder',
+          value: 'components',
+          checked: !findup('components')
         },
         {
-          name:'Behaviors Folder',
-          value:'behaviors',
-          checked:true
+          name: 'Behaviors Folder',
+          value: 'behaviors',
+          checked: !findup('behaviors')
         },
         {
-          name:'Validators Folder',
-          value:'validators',
-          checked:true
+          name: 'Validators Folder',
+          value: 'validators',
+          checked: !findup('validators')
         }
       ]
     },
