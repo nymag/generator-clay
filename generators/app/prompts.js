@@ -5,6 +5,23 @@ var chalk = require('chalk'),
   _ = require('lodash');
 
 module.exports = function (packageJson) {
+  var folderList = [];
+
+  _.each(['sites', 'components', 'behaviors', 'validators'], function (folderName) {
+    var exists = findup(folderName) ? chalk.gray.dim('exists') : false;
+    var message = _.startCase(folderName) + ' Folder';
+
+    folderList.push(
+      {
+        name: (exists) ? chalk.gray.dim(message) : message,
+        value: folderName,
+        checked: !exists,
+        disabled: exists
+      }
+    );
+
+  });
+
   var prompts = [
     {
       type: 'input',
@@ -25,28 +42,7 @@ module.exports = function (packageJson) {
       type:'checkbox',
       name:'folders',
       message:'\n\nWhich folders would you like to create?',
-      choices:[
-        {
-          name: 'Sites Folder',
-          value: 'sites',
-          checked: !findup('sites')
-        },
-        {
-          name: 'Components Folder',
-          value: 'components',
-          checked: !findup('components')
-        },
-        {
-          name: 'Behaviors Folder',
-          value: 'behaviors',
-          checked: !findup('behaviors')
-        },
-        {
-          name: 'Validators Folder',
-          value: 'validators',
-          checked: !findup('validators')
-        }
-      ]
+      choices: folderList
     },
   ];
 
