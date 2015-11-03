@@ -19,7 +19,34 @@ module.exports = function (packageJson) {
       when: !packageJson.keywords || _.isEmpty(packageJson.keywords),
       default: 'clay, instance',
       filter: _.words
-    }
+    },
+    {
+    type:'checkbox',
+    name:'folders',
+    message:'\n\nWhich folders would you like to create?',
+    choices:[
+      {
+        name:'Sites Folder',
+        value:'sites',
+        checked:true
+      },
+      {
+        name:'Components Folder',
+        value:'components',
+        checked:true
+      },
+      {
+        name:'Behaviors Folder',
+        value:'behaviors',
+        checked:true
+      },
+      {
+        name:'Validators Folder',
+        value:'validators',
+        checked:true
+      }
+    ]
+  },
   ];
 
   return prompts;
