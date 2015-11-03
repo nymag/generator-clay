@@ -5,15 +5,15 @@ var chalk = require('chalk'),
   _ = require('lodash');
 
 module.exports = function (packageJson) {
-  var folderList = [];
+  var prompts, exists, message, folderList = [];
 
   _.each(['sites', 'components', 'behaviors', 'validators'], function (folderName) {
-    var exists = findup(folderName) ? chalk.gray.dim('exists') : false;
-    var message = _.startCase(folderName) + ' Folder';
+    exists = findup(folderName) ? chalk.gray.dim('exists') : false;
+    message = _.startCase(folderName) + ' Folder';
 
     folderList.push(
       {
-        name: (exists) ? chalk.gray.dim(message) : message,
+        name: exists ? chalk.gray.dim(message) : message,
         value: folderName,
         checked: !exists,
         disabled: exists
@@ -22,7 +22,7 @@ module.exports = function (packageJson) {
 
   });
 
-  var prompts = [
+  prompts = [
     {
       type: 'input',
       name: 'description',
