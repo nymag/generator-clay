@@ -79,7 +79,7 @@ module.exports = generators.Base.extend({
     createFolders: function () {
       var done = this.async(),
         log = this.log,
-        folders = this.props.folders;
+        folders = ['sites', 'components', 'behaviors', 'validators'];
 
       if (folders) {
         log('Generating ' + chalk.blue(folders));

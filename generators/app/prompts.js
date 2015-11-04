@@ -1,28 +1,10 @@
 'use strict';
 
 var chalk = require('chalk'),
-  findup = require('findup-sync'),
   _ = require('lodash');
 
 module.exports = function (packageJson) {
-  var prompts, exists, message, folderList = [];
-
-  _.each(['sites', 'components', 'behaviors', 'validators'], function (folderName) {
-    exists = findup(folderName) ? chalk.gray.dim('exists') : false;
-    message = _.startCase(folderName) + ' Folder';
-
-    folderList.push(
-      {
-        name: exists ? chalk.gray.dim(message) : message,
-        value: folderName,
-        checked: !exists,
-        disabled: exists
-      }
-    );
-
-  });
-
-  prompts = [
+  var prompts = [
     {
       type: 'input',
       name: 'description',
@@ -37,16 +19,7 @@ module.exports = function (packageJson) {
       when: !packageJson.keywords || _.isEmpty(packageJson.keywords),
       default: 'clay, instance',
       filter: _.words
-    },
-    {
-      type:'checkbox',
-      name:'folders',
-      message:'\n\nWhich folders would you like to create?',
-      choices: folderList,
-      when: function () {
-        return _.size(_.where(folderList, {disabled: false})) > 0;
-      }
-    },
+    }
   ];
 
   return prompts;
