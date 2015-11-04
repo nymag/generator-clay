@@ -16,22 +16,11 @@ This will add the following files:
 * `app.js`
 * `package.json`
 
-### Folders
-* If a folder currently **exists**, that option will be disabled.
-
-* Otherwise you may select the folders you would like to create.
-
-#### Example
-
-```
-- Sites Folder (exists)
-
-- Components Folder (exists)
-
-- Behaviors Folder (exists)
-
-❯ ◉ Validators Folder
-```
+### Main Folders
+* `sites`
+* `components`
+* `behaviors`
+* `validators`
 
 ### Supplemental Files
 * `.gitignore`
