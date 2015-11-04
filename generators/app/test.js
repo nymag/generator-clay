@@ -5,7 +5,6 @@ var path = require('path'),
   helpers = generators.test,
   assert = generators.assert,
   appFiles = [
-    'README.md',
     'app.js',
     '.gitignore',
     '.eslintrc',
@@ -68,6 +67,13 @@ describe('clay app', function () {
 
     it('generates application specific files', function () {
       assert.file(appFiles);
+    });
+
+    it('adds name to README', function () {
+      var file = 'README.md';
+
+      assert.file(file);
+      assert.fileContent(file, /newapp/);
     });
 
   });
