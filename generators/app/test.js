@@ -5,7 +5,6 @@ var path = require('path'),
   helpers = generators.test,
   assert = generators.assert,
   appFiles = [
-    'package.json',
     'README.md',
     'app.js',
     '.gitignore',
@@ -22,7 +21,8 @@ var path = require('path'),
     'gulp/tasks/watch.js',
     'gulp/util/components.js',
     'gulp/util/folders.js'
-  ];
+  ],
+  packageJsonFile = 'package.json';
 
 /**
  * run the generator with various options
@@ -41,6 +41,25 @@ describe('clay app', function () {
   describe('defaults', function () {
     before(function (done) {
       runGenerator({}, done);
+    });
+
+    describe('clay app - `package.json`', function () {
+      before(function () {
+        assert.file(packageJsonFile);
+      });
+
+      it('adds name to package.json', function () {
+        assert.JSONFileContent(packageJsonFile, {name: 'newapp'});
+      });
+
+      it('adds description to package.json', function () {
+        assert.JSONFileContent(packageJsonFile, {description:'My new clay app instance'});
+      });
+
+      it('adds keywords to package.json', function () {
+        assert.JSONFileContent(packageJsonFile, {keywords: 'keyword1,keyword2'});
+      });
+
     });
 
     it('generates a gulpfile.js, gulp/tasks, & gulp/util folders', function () {
