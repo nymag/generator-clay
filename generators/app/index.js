@@ -2,6 +2,7 @@
 
 var generators = require('yeoman-generator'),
   chalk = require('chalk'),
+  mkdirp = require('mkdirp'),
   _ = require('lodash');
 
 module.exports = generators.Base.extend({
@@ -73,6 +74,29 @@ module.exports = generators.Base.extend({
           }
         );
       }
+    },
+
+    createFolders: function () {
+      var done = this.async(),
+        log = this.log,
+        folders = ['sites', 'components', 'behaviors', 'validators'];
+
+      if (folders) {
+        log('Generating ' + chalk.blue(folders));
+      }
+
+      // Create app folders
+      _.each(folders, function (name) {
+        mkdirp(name, function (err) {
+          if (err) {
+            log(chalk.red(err.message, err.stack));
+            process.exit(0);
+          }
+
+          done();
+        });
+      });
+
     },
 
     gulp: function () {

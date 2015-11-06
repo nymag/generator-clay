@@ -16,6 +16,12 @@ This will add the following files:
 * `app.js`
 * `package.json`
 
+### Main Folders
+* `sites`
+* `components`
+* `behaviors`
+* `validators`
+
 ### Supplemental Files
 * `.gitignore`
 * `.csscomb.json`
