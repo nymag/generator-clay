@@ -50,6 +50,9 @@ module.exports = generators.Base.extend({
         this.log(chalk.yellow('package.json') + ' found. Revising it.');
         this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
 
+        // Check if mocha exists in devDependencies
+        this.hasMocha = _.has(this.packageJson['devDependencies'], 'mocha');
+
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
 
@@ -172,8 +175,11 @@ module.exports = generators.Base.extend({
     },
 
     tests: function () {
-      this.npmInstall(['mocha'], { 'saveDev': true });
-      this.log('Installed ' + chalk.yellow.bold('mocha dev dependency.'));
+      // Only install if mocha does not exist
+      if (!this.hasMocha) {
+        this.npmInstall(['mocha'], { 'saveDev': true });
+        this.log('Installed ' + chalk.yellow.bold('mocha dev dependency.'));
+      }
     },
 
     main: function () {
