@@ -65,6 +65,10 @@ describe('clay app', function () {
       assert.file(folders);
     });
 
+    it('generates a test/mocha.opts folder & file', function () {
+      assert.file('test/mocha.opts');
+    });
+
     it('generates application specific files', function () {
       assert.file(appFiles);
     });
