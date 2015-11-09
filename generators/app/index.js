@@ -114,6 +114,15 @@ module.exports = generators.Base.extend({
       this.log('Generating ' + chalk.yellow.bold('gulp folders.'));
     },
 
+    tests: function () {
+      // Creates tests/mocha.opts
+      this.directory(
+        this.templatePath('test'),
+        this.destinationPath('test')
+      );
+      this.log('Generating ' + chalk.yellow.bold('test folder.'));
+    },
+
     app: function () {
       this.fs.copyTpl(
         this.templatePath('README.md'),
