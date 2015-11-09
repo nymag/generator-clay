@@ -34,6 +34,7 @@ module.exports = generators.Base.extend({
   writing: {
     packageJson: function () {
       var currentPackageJson,
+        msg,
         newPackageJson = {},
         packageJsonOrder = ['name','version','description','license','main','scripts','keywords','repository','dependencies','devDependencies'];
 
@@ -42,7 +43,8 @@ module.exports = generators.Base.extend({
         if (!this.packageJson[field]) {
           this.packageJson[field] = this.props[field];
         } else {
-          console.log(chalk.blue(field) + chalk.blue.bold(' exists: ') + this.packageJson[field]);
+          msg = _.endsWith(field, 's') ? ' exist: ' : ' exists: ';
+          console.log(chalk.blue(field) + chalk.blue.bold(msg) + this.packageJson[field]);
         }
       };
 
@@ -52,6 +54,10 @@ module.exports = generators.Base.extend({
 
         // Check if mocha exists in devDependencies
         this.hasMocha = _.has(this.packageJson['devDependencies'], 'mocha');
+
+        if (this.hasMocha) {
+          console.log(chalk.blue('mocha') + chalk.blue.bold(' exists: ') + this.packageJson['devDependencies']['mocha']);
+        }
 
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
