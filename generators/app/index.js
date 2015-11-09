@@ -171,6 +171,11 @@ module.exports = generators.Base.extend({
       this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
     },
 
+    tests: function () {
+      this.npmInstall(['mocha'], { 'saveDev': true });
+      this.log('Installed ' + chalk.yellow.bold('mocha dev dependency.'));
+    },
+
     main: function () {
       this.npmInstall();
       this.log('Your app ' + chalk.yellow.bold(this.appname) + ' was created.');
