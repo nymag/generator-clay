@@ -34,6 +34,7 @@ module.exports = generators.Base.extend({
   writing: {
     packageJson: function () {
       var currentPackageJson,
+        msg,
         newPackageJson = {},
         packageJsonOrder = ['name','version','description','license','main','scripts','keywords','repository','dependencies','devDependencies'];
 
@@ -42,13 +43,21 @@ module.exports = generators.Base.extend({
         if (!this.packageJson[field]) {
           this.packageJson[field] = this.props[field];
         } else {
-          console.log(chalk.blue(field) + chalk.blue.bold(' exists: ') + this.packageJson[field]);
+          msg = _.endsWith(field, 's') ? ' exist: ' : ' exists: ';
+          console.log(chalk.blue(field) + chalk.blue.bold(msg) + this.packageJson[field]);
         }
       };
 
       if (this.fs.exists(this.destinationPath('package.json'))) {
         this.log(chalk.yellow('package.json') + ' found. Revising it.');
         this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
+
+        // Check if mocha exists in devDependencies
+        this.hasMocha = _.has(this.packageJson['devDependencies'], 'mocha');
+
+        if (this.hasMocha) {
+          console.log(chalk.blue('mocha') + chalk.blue.bold(' exists: ') + this.packageJson['devDependencies']['mocha']);
+        }
 
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
@@ -114,6 +123,15 @@ module.exports = generators.Base.extend({
       this.log('Generating ' + chalk.yellow.bold('gulp folders.'));
     },
 
+    tests: function () {
+      // Creates tests/mocha.opts
+      this.directory(
+        this.templatePath('test'),
+        this.destinationPath('test')
+      );
+      this.log('Generating ' + chalk.yellow.bold('test folder.'));
+    },
+
     app: function () {
       this.fs.copyTpl(
         this.templatePath('README.md'),
@@ -160,6 +178,14 @@ module.exports = generators.Base.extend({
 
       this.npmInstall(_.keys(gulpDependencies), { 'save': true });
       this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
+    },
+
+    tests: function () {
+      // Only install if mocha does not exist
+      if (!this.hasMocha) {
+        this.npmInstall(['mocha'], { 'saveDev': true });
+        this.log('Installed ' + chalk.yellow.bold('mocha dev dependency.'));
+      }
     },
 
     main: function () {
