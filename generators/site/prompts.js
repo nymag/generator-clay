@@ -1,7 +1,6 @@
 'use strict';
 
-var _ = require('lodash'),
-  prompts;
+const _ = require('lodash');
 
 function fixInputSlashes(input) {
   // add/remove slashes if the input is more than just '/'
@@ -23,7 +22,7 @@ function fixInputSlashes(input) {
 };
 
 module.exports = function () {
-  prompts = [
+  const prompts = [
     {
       type: 'input',
       name: 'name',
