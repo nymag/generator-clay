@@ -25,46 +25,16 @@ module.exports = generators.NamedBase.extend({
     }
   },
 
-  prompting: {
-    getSiteConfig: function () {
-      var done = this.async();
+  prompting: function () {
+    // Gets site config
+    var done = this.async(),
+      prompts = require('./prompts.js')();
 
-      this.prompt([{
-        type: 'input',
-        name: 'name',
-        message: 'What is the human-readable name of your site'
-      }, {
-        type: 'input',
-        name: 'host',
-        message: 'What is your site\'s domain name'
-      }, {
-        type: 'input',
-        name: 'path',
-        message: 'What is your site\'s path',
-        default: '/',
-        filter: function (input) {
-          // add/remove slashes if the input is more than just '/'
-          if (input === '/') {
-            return input;
-          }
+    this.prompt(prompts, function (props) {
+      this.config = props;
 
-          if (input.indexOf('/') !== 0) {
-            // if it doesn't start with a slash, add one
-            input = '/' + input;
-          }
-
-          if (input.lastIndexOf('/') === input.length - 1) {
-            // if it ends with a slash, remove it
-            input = input.substring(0, input.length - 1);
-          }
-
-          return input;
-        }
-      }], function (answers) {
-        this.config = answers;
-        done();
-      }.bind(this));
-    }
+      done();
+    }.bind(this));
   },
 
   writing: {
