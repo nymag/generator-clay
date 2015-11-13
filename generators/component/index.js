@@ -60,39 +60,12 @@ module.exports = generators.NamedBase.extend({
 
   prompting: {
     getTplExtension: function () {
-      var done = this.async();
+      var done = this.async(),
+        prompts = require('./prompts.js')();
 
-      this.prompt([{
-        // ask for the template language
-        type: 'list',
-        name: 'templateLang',
-        message: 'What templating language do you want to use?',
-        default: 'nunjucks',
-        choices: [{
-          name: 'Nunjucks',
-          value: 'nunjucks'
-        }, {
-          name: 'Jade',
-          value: 'jade'
-        }, {
-          name: 'Other (enter on next prompt)',
-          value: 'other'
-        }],
-        store: true // store their defaults for the next time they use this
-      }, {
-        // ask for custom template language if they answered 'other'
-        type: 'input',
-        name: 'customTemplateLang',
-        message: 'Please type the extension you want',
-        filter: function (input) {
-          return input.indexOf('.') === 0 ? input.replace('.', '') : input;
-          // remove dot if they type it, e.g. .ejs -> ejs
-        },
-        when: function (answers) {
-          return answers.templateLang === 'other';
-        }
-      }], function (answers) {
-        this.tplExtension = answers.templateLang !== 'other' ? answers.templateLang : answers.customTemplateLang;
+      this.prompt(prompts, function (props) {
+        this.tplExtension = props.templateLang !== 'other' ? props.templateLang : props.customTemplateLang;
+
         done();
       }.bind(this));
     },
@@ -100,24 +73,9 @@ module.exports = generators.NamedBase.extend({
     getFields: function () {
       var done = this.async(),
         fields = [],
-        addField, addMoreFields, continueFn;
+        promptsInputFields = require('./promptsInputFields.js')(),
+        continueFn;
 
-      // describe the field you want
-      addField = {
-        type: 'input',
-        name: 'fieldName',
-        message: 'Input fields name (in camelCase)',
-        validate: function (input) {
-          return input === _.camelCase(input) ? true : 'Please use camelCase for your field name';
-        }
-      };
-
-      // keep adding fields?
-      addMoreFields = {
-        type: 'confirm',
-        name: 'addFields',
-        message: 'Add more fields'
-      };
 
       // if they want to keep adding fields, recurse
       continueFn = function (answers) {
@@ -128,7 +86,7 @@ module.exports = generators.NamedBase.extend({
 
         if (answers.addFields) {
           // keep going
-          this.prompt([addField, addMoreFields], continueFn.bind(this));
+          this.prompt(promptsInputFields, continueFn.bind(this));
         } else {
           // finish up
           this.fields = fields;
