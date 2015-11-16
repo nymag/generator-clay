@@ -16,7 +16,30 @@ module.exports = generators.Base.extend({
   },
 
   initializing: function () {
-    this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
+    this.packageJson = require(this.destinationPath('package.json'));
+
+    // Helper function to check if dependency exists
+    this.checkDeps = function (depsObject, whereToLook) {
+      var pkg = this.packageJson;
+
+      return _.chain(depsObject)
+      // Checks if dependency exist
+      .pick(function (value, name) {
+        var hasModule = !_.has(pkg[whereToLook], name);
+
+        if (hasModule) {
+          console.log(chalk.cyan(name) + chalk.cyan.bold(' does not exist: ') + value);
+        }
+        return hasModule;
+      })
+      // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
+      .mapKeys(function (moduleVerison, moduleName) {
+        return moduleName + moduleVerison.replace('\^','@');
+      })
+      // Returns the keys
+      .keys()
+      .value();
+    };
   },
 
   prompting: function () {
@@ -50,7 +73,7 @@ module.exports = generators.Base.extend({
 
       if (this.fs.exists(this.destinationPath('package.json'))) {
         this.log(chalk.yellow('package.json') + ' found. Revising it.');
-        this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
+        this.packageJson = require(this.destinationPath('package.json'));
 
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
