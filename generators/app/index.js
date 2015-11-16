@@ -52,13 +52,6 @@ module.exports = generators.Base.extend({
         this.log(chalk.yellow('package.json') + ' found. Revising it.');
         this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
 
-        // Check if mocha exists in devDependencies
-        this.hasMocha = _.has(this.packageJson['devDependencies'], 'mocha');
-
-        if (this.hasMocha) {
-          console.log(chalk.blue('mocha') + chalk.blue.bold(' exists: ') + this.packageJson['devDependencies']['mocha']);
-        }
-
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
 
@@ -178,14 +171,6 @@ module.exports = generators.Base.extend({
 
       this.npmInstall(_.keys(gulpDependencies), { 'save': true });
       this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
-    },
-
-    tests: function () {
-      // Only install if mocha does not exist
-      if (!this.hasMocha) {
-        this.npmInstall(['mocha'], { 'saveDev': true });
-        this.log('Installed ' + chalk.yellow.bold('mocha dev dependency.'));
-      }
     },
 
     main: function () {
