@@ -7,6 +7,9 @@ var generators = require('yeoman-generator'),
 
 module.exports = generators.Base.extend({
   constructor: function () {
+    // Clear screen before running generator
+    this.spawnCommand('clear', []);
+
     generators.Base.apply(this, arguments);
     this.log('Welcome to the ' + chalk.yellow.bold('Clay Instance') + ' generator!');
 
@@ -79,7 +82,7 @@ module.exports = generators.Base.extend({
       };
 
       if (this.fs.exists(this.destinationPath('package.json'))) {
-        this.log(chalk.yellow('package.json') + ' found. Revising it.');
+        this.log(chalk.yellow('\npackage.json') + ' found. Revising it.');
         this.packageJson = this.fs.readJSON(this.destinationPath('package.json'),{});
 
         this.setPackageJsonField('description');
@@ -106,6 +109,7 @@ module.exports = generators.Base.extend({
           }
         );
       }
+      this.separator();
     },
 
     createFolders: function () {
