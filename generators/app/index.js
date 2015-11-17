@@ -9,9 +9,7 @@ module.exports = generators.Base.extend({
   constructor: function () {
     // Clear screen before running generator
     this.spawnCommand('clear', []);
-
     generators.Base.apply(this, arguments);
-    this.log('Welcome to the ' + chalk.yellow.bold('Clay Instance') + ' generator!');
 
     // Store user-inputed appname
     this.argument('appname', { type: String, required: false });
@@ -50,6 +48,10 @@ module.exports = generators.Base.extend({
       .keys()
       .value();
     };
+
+    this.separator('.');
+    this.log('\nWelcome to the ' + chalk.yellow.bold('Clay Instance') + ' generator!');
+    this.separator('.');
   },
 
   prompting: function () {
