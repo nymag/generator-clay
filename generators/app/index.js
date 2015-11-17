@@ -18,6 +18,13 @@ module.exports = generators.Base.extend({
   initializing: function () {
     this.packageJson = this.fs.readJSON(this.destinationPath('package.json'),{});
 
+    // Displays solid line or specified character as a visual divider
+    this.separator = function (c) {
+      var line = c ? chalk.yellow(_.repeat(c, 60)) : chalk.gray.underline(_.repeat(' ', 60));
+
+      this.log('\n' + line);
+    };
+
     // Helper function to check if dependency exists
     this.checkDeps = function (depsObject, whereToLook) {
       var pkg = this.packageJson;
@@ -188,6 +195,7 @@ module.exports = generators.Base.extend({
       // Check if main dependencies exist
       var mainDependencies = require('./mainDeps.json');
 
+      this.separator();
       mainDependencies = this.checkDeps(mainDependencies,'dependencies');
       this.npmInstall(mainDependencies, { 'save': true });
       this.log('Installed ' + chalk.yellow.bold('main dependencies.'));
@@ -197,6 +205,7 @@ module.exports = generators.Base.extend({
       // Check if gulp dependencies exist
       var gulpDependencies = require('./gulpDeps.json');
 
+      this.separator();
       gulpDependencies = this.checkDeps(gulpDependencies, 'dependencies');
       this.npmInstall(gulpDependencies, { 'save': true });
       this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
@@ -206,6 +215,7 @@ module.exports = generators.Base.extend({
       // Check if devDependencies exist
       var devDependencies = require('./devDeps.json');
 
+      this.separator();
       devDependencies = this.checkDeps(devDependencies, 'devDependencies');
       this.npmInstall(devDependencies, { 'saveDev': true });
       this.log('Installed ' + chalk.yellow.bold('dev dependencies.'));
@@ -213,7 +223,9 @@ module.exports = generators.Base.extend({
 
     main: function () {
       this.npmInstall();
-      this.log('Your app ' + chalk.yellow.bold(this.appname) + ' was created.');
+      this.separator('x');
+      this.log('\n\tYour app ' + chalk.yellow.bold(this.appname) + ' was created.');
+      this.separator('x');
     }
   }
 });
