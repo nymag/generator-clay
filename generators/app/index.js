@@ -16,7 +16,7 @@ module.exports = generators.Base.extend({
   },
 
   initializing: function () {
-    this.packageJson = require(this.destinationPath('package.json'));
+    this.packageJson = this.fs.readJSON(this.destinationPath('package.json'),{});
 
     // Helper function to check if dependency exists
     this.checkDeps = function (depsObject, whereToLook) {
@@ -73,7 +73,7 @@ module.exports = generators.Base.extend({
 
       if (this.fs.exists(this.destinationPath('package.json'))) {
         this.log(chalk.yellow('package.json') + ' found. Revising it.');
-        this.packageJson = require(this.destinationPath('package.json'));
+        this.packageJson = this.fs.readJSON(this.destinationPath('package.json'),{});
 
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
