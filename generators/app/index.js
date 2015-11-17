@@ -184,16 +184,31 @@ module.exports = generators.Base.extend({
 
   // Run npm install
   install: {
+    app: function () {
+      // Check if main dependencies exist
+      var mainDependencies = require('./mainDeps.json');
+
+      mainDependencies = this.checkDeps(mainDependencies,'dependencies');
+      this.npmInstall(mainDependencies, { 'save': true });
+      this.log('Installed ' + chalk.yellow.bold('main dependencies.'));
+    },
+
     gulp: function () {
-      var gulpDependencies = require('./gulpdeps.json');
+      // Check if gulp dependencies exist
+      var gulpDependencies = require('./gulpDeps.json');
 
-      // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
-      gulpDependencies =  _.mapKeys(gulpDependencies, function (moduleVerison, moduleName) {
-        return moduleName + moduleVerison.replace('\^','@');
-      });
-
-      this.npmInstall(_.keys(gulpDependencies), { 'save': true });
+      gulpDependencies = this.checkDeps(gulpDependencies, 'dependencies');
+      this.npmInstall(gulpDependencies, { 'save': true });
       this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
+    },
+
+    devDeps: function () {
+      // Check if devDependencies exist
+      var devDependencies = require('./devDeps.json');
+
+      devDependencies = this.checkDeps(devDependencies, 'devDependencies');
+      this.npmInstall(devDependencies, { 'saveDev': true });
+      this.log('Installed ' + chalk.yellow.bold('dev dependencies.'));
     },
 
     main: function () {
