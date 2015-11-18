@@ -13,5 +13,7 @@
   ],
   "repository": {
     "type": "git"
-  }
+  },
+  "dependencies": <%- dependencies %><%= dependencies ? ',' : '' %>
+  "devDependencies":<%- devDependencies %>
 }

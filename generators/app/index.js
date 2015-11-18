@@ -3,7 +3,10 @@
 var generators = require('yeoman-generator'),
   chalk = require('chalk'),
   mkdirp = require('mkdirp'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  mainDependencies = require('./mainDeps.json'),
+  gulpDependencies = require('./gulpDeps.json'),
+  devDependencies = require('./devDeps.json');
 
 module.exports = generators.Base.extend({
   constructor: function () {
@@ -107,7 +110,9 @@ module.exports = generators.Base.extend({
           {
             appname: this.appname,
             description: this.props.description,
-            keywords: this.props.keywords
+            keywords: this.props.keywords,
+            dependencies: JSON.stringify(_.extend(mainDependencies, gulpDependencies), null, 4),
+            devDependencies: JSON.stringify(devDependencies, null, 4)
           }
         );
       }
