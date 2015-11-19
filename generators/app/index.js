@@ -31,7 +31,8 @@ module.exports = generators.Base.extend({
 
     // Helper function to check if dependency exists
     this.checkDeps = function (depsObject, whereToLook) {
-      var pkg = this.packageJson;
+      var pkg = this.packageJson,
+        log = this.log;
 
       return _.chain(depsObject)
       // Checks if dependency exist
@@ -39,7 +40,7 @@ module.exports = generators.Base.extend({
         var hasModule = !_.has(pkg[whereToLook], name);
 
         if (hasModule) {
-          console.log(chalk.cyan(name) + chalk.cyan.bold(' does not exist: ') + value);
+          log(chalk.cyan(name) + chalk.cyan.bold(' does not exist: ') + value);
         }
         return hasModule;
       })
