@@ -49,7 +49,7 @@ module.exports = generators.NamedBase.extend({
           log(chalk.red(err.message));
           process.exit(0);
         } else {
-          log(chalk.dim.blue('-----------------------'));
+          log(chalk.gray.underline(_.repeat(' ', 60)));
           log(chalk.bold('Generating new site: ') + chalk.bold.blue(name));
         }
 
