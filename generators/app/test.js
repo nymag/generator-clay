@@ -2,6 +2,7 @@
 
 var path = require('path'),
   generators = require('yeoman-generator'),
+  os = require('os'),
   helpers = generators.test,
   assert = generators.assert,
   appFiles = [
@@ -21,15 +22,22 @@ var path = require('path'),
     'gulp/util/components.js',
     'gulp/util/folders.js'
   ],
-  packageJsonFile = 'package.json';
+  outputDir = './temp-test',
+  tempPath = path.join(os.tmpdir(), outputDir),
+  packageJsonFile = 'package.json',
+  devDeps = require('./devDeps'),
+  gulpDeps = require('./gulpDeps'),
+  mainDeps = require('./mainDeps');
 
 /**
  * run the generator with various options
  * @param {object} options (note: could be empty obj)
  * @param {Function} done async callback
  */
+
 function runGenerator(options, done) {
   helpers.run(path.join(__dirname, 'index.js'))
+    .inDir(tempPath)
     .withArguments(['newapp'])
     .withOptions(options)
     .withPrompts({ description: 'My new clay app instance', keywords: 'keyword1,keyword2'})
@@ -57,6 +65,18 @@ describe('clay app', function () {
 
       it('adds keywords to package.json', function () {
         assert.JSONFileContent(packageJsonFile, {keywords: 'keyword1,keyword2'});
+      });
+
+      it('adds dependencies to package.json', function () {
+        assert.JSONFileContent(packageJsonFile, {dependencies: mainDeps});
+      });
+
+      it('adds gulp dependencies to package.json', function () {
+        assert.JSONFileContent(packageJsonFile, {dependencies: gulpDeps});
+      });
+
+      it('adds devDependencies to package.json', function () {
+        assert.JSONFileContent(packageJsonFile, {devDependencies: devDeps});
       });
 
     });

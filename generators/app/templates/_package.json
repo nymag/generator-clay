@@ -14,13 +14,6 @@
   "repository": {
     "type": "git"
   },
-  "dependencies": {
-    "@nymdev/amphora": "^1.0.0"
-  },
-  "devDependencies": {
-    "chai": "^3.0.0",
-    "eslint": "^1.4.3",
-    "mocha": "^2.2.5",
-    "sinon": "^1.15.4"
-  }
+  "dependencies": <%- dependencies %><%= dependencies ? ',' : '' %>
+  "devDependencies":<%- devDependencies %>
 }

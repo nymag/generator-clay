@@ -132,7 +132,7 @@ module.exports = generators.NamedBase.extend({
           log(chalk.red(err.message, err.stack));
           process.exit(0);
         } else {
-          log(chalk.dim.blue('-----------------------'));
+          log(chalk.gray.underline(_.repeat(' ', 60)));
           log(chalk.bold('Generating new component: ') + chalk.bold.blue(folderName));
         }
 

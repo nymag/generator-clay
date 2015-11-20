@@ -13,6 +13,6 @@
   "gulp-sass": "^2.0",
   "gulp-sourcemaps": "^1.5.2",
   "gulp-uglify": "^1.2.0",
-  "responsive-filenames": "^1.0.3",
-  "require-dir": "^0.3.0"
+  "require-dir": "^0.3.0",
+  "responsive-filenames": "^1.0.3"
 }

@@ -3,12 +3,16 @@
 var generators = require('yeoman-generator'),
   chalk = require('chalk'),
   mkdirp = require('mkdirp'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  mainDependencies = require('./mainDeps.json'),
+  gulpDependencies = require('./gulpDeps.json'),
+  devDependencies = require('./devDeps.json');
 
 module.exports = generators.Base.extend({
   constructor: function () {
+    // Clear screen before running generator
+    this.spawnCommand('clear', []);
     generators.Base.apply(this, arguments);
-    this.log('Welcome to the ' + chalk.yellow.bold('Clay Instance') + ' generator!');
 
     // Store user-inputed appname
     this.argument('appname', { type: String, required: false });
@@ -16,7 +20,42 @@ module.exports = generators.Base.extend({
   },
 
   initializing: function () {
-    this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
+    this.packageJson = this.fs.readJSON(this.destinationPath('package.json'),{});
+
+    // Displays solid line or specified character as a visual divider
+    this.separator = function (c) {
+      var line = c ? chalk.yellow(_.repeat(c, 60)) : chalk.gray.underline(_.repeat(' ', 60));
+
+      this.log('\n' + line);
+    };
+
+    // Helper function to check if dependency exists
+    this.checkDeps = function (depsObject, whereToLook) {
+      var pkg = this.packageJson,
+        log = this.log;
+
+      return _.chain(depsObject)
+      // Checks if dependency exist
+      .pick(function (value, name) {
+        var hasModule = !_.has(pkg[whereToLook], name);
+
+        if (hasModule) {
+          log(chalk.cyan(name) + chalk.cyan.bold(' does not exist: ') + value);
+        }
+        return hasModule;
+      })
+      // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
+      .mapKeys(function (moduleVerison, moduleName) {
+        return moduleName + moduleVerison.replace('\^','@');
+      })
+      // Returns the keys
+      .keys()
+      .value();
+    };
+
+    this.separator('.');
+    this.log('\nWelcome to the ' + chalk.yellow.bold('Clay Instance') + ' generator!');
+    this.separator('.');
   },
 
   prompting: function () {
@@ -49,15 +88,8 @@ module.exports = generators.Base.extend({
       };
 
       if (this.fs.exists(this.destinationPath('package.json'))) {
-        this.log(chalk.yellow('package.json') + ' found. Revising it.');
-        this.packageJson = this.fs.readJSON(this.destinationPath('package.json'), {});
-
-        // Check if mocha exists in devDependencies
-        this.hasMocha = _.has(this.packageJson['devDependencies'], 'mocha');
-
-        if (this.hasMocha) {
-          console.log(chalk.blue('mocha') + chalk.blue.bold(' exists: ') + this.packageJson['devDependencies']['mocha']);
-        }
+        this.log(chalk.yellow('\npackage.json') + ' found. Revising it.');
+        this.packageJson = this.fs.readJSON(this.destinationPath('package.json'),{});
 
         this.setPackageJsonField('description');
         this.setPackageJsonField('keywords');
@@ -79,10 +111,13 @@ module.exports = generators.Base.extend({
           {
             appname: this.appname,
             description: this.props.description,
-            keywords: this.props.keywords
+            keywords: this.props.keywords,
+            dependencies: JSON.stringify(_.extend(mainDependencies, gulpDependencies), null, 4),
+            devDependencies: JSON.stringify(devDependencies, null, 4)
           }
         );
       }
+      this.separator();
     },
 
     createFolders: function () {
@@ -168,29 +203,41 @@ module.exports = generators.Base.extend({
 
   // Run npm install
   install: {
+    app: function () {
+      // Check if main dependencies exist
+      var mainDependencies = require('./mainDeps.json');
+
+      this.separator();
+      mainDependencies = this.checkDeps(mainDependencies,'dependencies');
+      this.npmInstall(mainDependencies, { 'save': true });
+      this.log('Installed ' + chalk.yellow.bold('main dependencies.'));
+    },
+
     gulp: function () {
-      var gulpDependencies = require('./gulpdeps.json');
+      // Check if gulp dependencies exist
+      var gulpDependencies = require('./gulpDeps.json');
 
-      // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
-      gulpDependencies =  _.mapKeys(gulpDependencies, function (moduleVerison, moduleName) {
-        return moduleName + moduleVerison.replace('\^','@');
-      });
-
-      this.npmInstall(_.keys(gulpDependencies), { 'save': true });
+      this.separator();
+      gulpDependencies = this.checkDeps(gulpDependencies, 'dependencies');
+      this.npmInstall(gulpDependencies, { 'save': true });
       this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
     },
 
-    tests: function () {
-      // Only install if mocha does not exist
-      if (!this.hasMocha) {
-        this.npmInstall(['mocha'], { 'saveDev': true });
-        this.log('Installed ' + chalk.yellow.bold('mocha dev dependency.'));
-      }
+    devDeps: function () {
+      // Check if devDependencies exist
+      var devDependencies = require('./devDeps.json');
+
+      this.separator();
+      devDependencies = this.checkDeps(devDependencies, 'devDependencies');
+      this.npmInstall(devDependencies, { 'saveDev': true });
+      this.log('Installed ' + chalk.yellow.bold('dev dependencies.'));
     },
 
     main: function () {
       this.npmInstall();
-      this.log('Your app ' + chalk.yellow.bold(this.appname) + ' was created.');
+      this.separator('x');
+      this.log('\n\tYour app ' + chalk.yellow.bold(this.appname) + ' was created.');
+      this.separator('x');
     }
   }
 });
