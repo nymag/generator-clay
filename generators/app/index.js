@@ -46,7 +46,12 @@ module.exports = generators.Base.extend({
       })
       // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
       .mapKeys(function (moduleVerison, moduleName) {
-        return moduleName + moduleVerison.replace('\^','@');
+        if(moduleVerison.match(/\*/)){
+          console.log('Get latest');
+          return moduleName + moduleVerison.replace('*','@latest');
+        } else {
+          return moduleName + moduleVerison.replace('^','@');
+        }
       })
       // Returns the keys
       .keys()
