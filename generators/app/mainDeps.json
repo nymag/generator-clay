@@ -1,4 +1,4 @@
 {
   "@nymdev/amphora": "^1.0.0",
-  "clay-kiln": "*"
+  "@nymdev/clay-kiln": "*"
 }
