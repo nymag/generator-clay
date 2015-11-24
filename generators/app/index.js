@@ -4,11 +4,14 @@ var generators = require('yeoman-generator'),
   chalk = require('chalk'),
   mkdirp = require('mkdirp'),
   _ = require('lodash'),
+  optionOrPrompt = require('yeoman-option-or-prompt'),
   mainDependencies = require('./mainDeps.json'),
   gulpDependencies = require('./gulpDeps.json'),
   devDependencies = require('./devDeps.json');
 
 module.exports = generators.Base.extend({
+  _optionOrPrompt: optionOrPrompt,
+
   constructor: function () {
     // Clear screen before running generator
     this.spawnCommand('clear', []);
@@ -66,7 +69,7 @@ module.exports = generators.Base.extend({
     var done = this.async(),
       prompts = require('./prompts.js')(this.packageJson);
 
-    this.prompt(prompts, function (props) {
+    this._optionOrPrompt(prompts, function (props) {
       this.props = props;
 
       done();
