@@ -1,0 +1,22 @@
+
+## It Works!
+
+This is a component on a page running [Clay](https://github.com/nymag/amphora). The above message is editable! To go into Edit Mode, click <kbd>this button</kbd>. ( <-- that'll be a button that simply appends `?edit=true` to the url )
+
+~~~~~~~~~~~ in view mode
+
+## You are in View Mode!
+
+This is what the page looks like when accessing it publicly. All of the components you see on the page (currently just this one) are their `@published` version. Components know what mode they're in; in fact, `clay-kiln`, our editor, is just another component!
+
+~~~~~~~~~~~ /in view mode
+
+~~~~~~~~~~~ in edit mode
+
+## You are in Edit Mode!
+
+Click the welcome message to change it, then click out of the form to save. You will see the latest changes in edit mode, but won't see them in view mode until you re-publish this page!
+
+_Note: Publishing a page publishes all of the components on a page. In the near future when we have proper user accounts, you will be able to differentiate between publishing components specific to this page and publishing components that are shared among pages with this layout_
+
+~~~~~~~~~~~ /in edit mode
