@@ -1,10 +1,10 @@
 'use strict';
 
 var generators = require('yeoman-generator'),
+  optionOrPrompt = require('yeoman-option-or-prompt'),
   chalk = require('chalk'),
   mkdirp = require('mkdirp'),
   _ = require('lodash'),
-  optionOrPrompt = require('yeoman-option-or-prompt'),
   mainDependencies = require('./mainDeps.json'),
   gulpDependencies = require('./gulpDeps.json'),
   devDependencies = require('./devDeps.json');
