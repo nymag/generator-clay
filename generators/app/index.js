@@ -15,8 +15,7 @@ module.exports = generators.Base.extend({
     generators.Base.apply(this, arguments);
 
     // Store user-inputed appname
-    this.argument('appname', { type: String, required: false });
-    this.appname = this.app_name || this.appname;
+    this.argument('appname', { type: String, required: true, desc:'Application name (Use only _ or -)', defaults:'example' });
   },
 
   initializing: function () {
@@ -46,7 +45,12 @@ module.exports = generators.Base.extend({
       })
       // Maps module to module@version (i.e `gulp` -> `gulp@3.8.11`)
       .mapKeys(function (moduleVerison, moduleName) {
-        return moduleName + moduleVerison.replace('\^','@');
+        if (moduleVerison.match(/\*/)) {
+          console.log('Get latest ' + moduleName);
+          return moduleName + moduleVerison.replace('*','@latest');
+        } else {
+          return moduleName + moduleVerison.replace('^','@');
+        }
       })
       // Returns the keys
       .keys()
