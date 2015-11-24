@@ -13,11 +13,9 @@ module.exports = generators.Base.extend({
     // Clear screen before running generator
     this.spawnCommand('clear', []);
     generators.Base.apply(this, arguments);
-    this.env.error(chalk.red.bold('You must provide a name for your clay instance!'));
 
     // Store user-inputed appname
     this.argument('appname', { type: String, required: true, desc:'Application name (Use only _ or -)', defaults:'example' });
-    this.appname = this.appname;
   },
 
   initializing: function () {
