@@ -31,6 +31,16 @@ module.exports = generators.Base.extend({
     },
     createSite: function () {
       this.log('Create site: ', example.siteName);
+      this.composeWith('clay:site',
+        {
+          options: {
+            name: 'My Example Blog',
+            host: 'myexample.com',
+            path: '/mysite'
+          },
+          args: [example.siteName]
+        }
+      );
     }
   }
 });
