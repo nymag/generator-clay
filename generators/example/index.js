@@ -28,6 +28,16 @@ module.exports = generators.Base.extend({
     },
     createComponent: function () {
       this.log('Create component: ', example.componentName);
+      this.composeWith('clay:component',
+        {
+          options: {
+            templateLang: 'nunjucks',
+            fieldName: 'headline',
+            addFields: false,
+          },
+          args: [example.componentName]
+        }
+      );
     },
     createSite: function () {
       this.log('Create site: ', example.siteName);
