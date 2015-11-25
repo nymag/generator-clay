@@ -1,6 +1,7 @@
 'use strict';
 
 var generators = require('yeoman-generator'),
+  optionOrPrompt = require('yeoman-option-or-prompt'),
   fs = require('fs'),
   path = require('path'),
   chalk = require('chalk'),
@@ -8,6 +9,8 @@ var generators = require('yeoman-generator'),
   _ = require('lodash');
 
 module.exports = generators.NamedBase.extend({
+  _optionOrPrompt: optionOrPrompt,
+
   constructor: function () {
     generators.NamedBase.apply(this, arguments);
   },
@@ -30,7 +33,7 @@ module.exports = generators.NamedBase.extend({
     var done = this.async(),
       prompts = require('./prompts.js')();
 
-    this.prompt(prompts, function (props) {
+    this._optionOrPrompt(prompts, function (props) {
       this.config = props;
 
       done();
