@@ -1,6 +1,7 @@
 'use strict';
 
 var generators = require('yeoman-generator'),
+  optionOrPrompt = require('yeoman-option-or-prompt'),
   fs = require('fs'),
   chalk = require('chalk'),
   _ = require('lodash'),
@@ -10,6 +11,8 @@ var generators = require('yeoman-generator'),
   viewportsHash = require('./viewports.json');
 
 module.exports = generators.NamedBase.extend({
+  _optionOrPrompt: optionOrPrompt,
+
   constructor: function () {
     generators.NamedBase.apply(this, arguments);
 
@@ -63,7 +66,7 @@ module.exports = generators.NamedBase.extend({
       var done = this.async(),
         prompts = require('./prompts.js')();
 
-      this.prompt(prompts, function (props) {
+      this._optionOrPrompt(prompts, function (props) {
         this.tplExtension = props.templateLang !== 'other' ? props.templateLang : props.customTemplateLang;
 
         done();
@@ -86,7 +89,7 @@ module.exports = generators.NamedBase.extend({
 
         if (answers.addFields) {
           // keep going
-          this.prompt(promptsInputFields, continueFn.bind(this));
+          this._optionOrPrompt(promptsInputFields, continueFn.bind(this));
         } else {
           // finish up
           this.fields = fields;
@@ -94,7 +97,7 @@ module.exports = generators.NamedBase.extend({
         }
       }.bind(this);
 
-      this.prompt([{
+      this._optionOrPrompt([{
         type: 'confirm',
         name: 'addFields',
         message: 'Add fields to generate a bootstrap and schema',

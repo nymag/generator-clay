@@ -1,6 +1,7 @@
 'use strict';
 
 var generators = require('yeoman-generator'),
+  optionOrPrompt = require('yeoman-option-or-prompt'),
   chalk = require('chalk'),
   mkdirp = require('mkdirp'),
   _ = require('lodash'),
@@ -9,13 +10,20 @@ var generators = require('yeoman-generator'),
   devDependencies = require('./devDeps.json');
 
 module.exports = generators.Base.extend({
+  _optionOrPrompt: optionOrPrompt,
+
   constructor: function () {
     // Clear screen before running generator
     this.spawnCommand('clear', []);
-    generators.Base.apply(this, arguments);
 
-    // Store user-inputed appname
-    this.argument('appname', { type: String, required: true, desc:'Application name (Use only _ or -)', defaults:'example' });
+    try {
+      generators.Base.apply(this, arguments);
+
+      // Store user-inputed appname
+      this.argument('appname', { type: String, required: true, desc:'Application name (Use only _ or -)', defaults:'example' });
+    } catch (e) {
+      this.env.error(chalk.red.bold('You must provide a name for your clay instance!'));
+    }
   },
 
   initializing: function () {
@@ -66,7 +74,7 @@ module.exports = generators.Base.extend({
     var done = this.async(),
       prompts = require('./prompts.js')(this.packageJson);
 
-    this.prompt(prompts, function (props) {
+    this._optionOrPrompt(prompts, function (props) {
       this.props = props;
 
       done();
