@@ -13,6 +13,7 @@ module.exports = generators.Base.extend({
     generators.Base.apply(this, arguments);
     console.log(chalk.blue('You called the subgenerator for `' + chalk.bold.yellow('example') + '`.'));
   },
+
   writing: {
     createInstance: function () {
       this.log('Create instance: ', example.appName);
@@ -53,5 +54,16 @@ module.exports = generators.Base.extend({
         }
       );
     }
+  },
+
+  end: {
+    createComponentTemplate: function () {
+      this.fs.copy(
+        this.templatePath('_index.html'),
+        this.destinationPath('components/' + example.componentName + '/template.nunjucks')
+      );
+
+      this.log('Generating ' + chalk.yellow.bold('template.nunjucks') + ' for ' + chalk.yellow.bold(example.componentName));
+    },
   }
 });
