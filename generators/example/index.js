@@ -32,8 +32,9 @@ module.exports = generators.Base.extend({
         {
           options: {
             templateLang: 'nunjucks',
+            addFields: true,
             fieldName: 'headline',
-            addFields: false,
+            addMoreFields: false,
           },
           args: [example.componentName]
         }
