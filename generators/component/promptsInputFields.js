@@ -15,7 +15,7 @@ module.exports = function () {
     },
     {
       type: 'confirm',
-      name: 'addFields',
+      name: 'addMoreFields',
       message: 'Add more fields'
     }
   ];
