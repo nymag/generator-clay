@@ -16,6 +16,15 @@ module.exports = generators.Base.extend({
   writing: {
     createInstance: function () {
       this.log('Create instance: ', example.appName);
+      this.composeWith('clay:app',
+        {
+          options: {
+            description: 'This is an example description for this package.json.',
+            keywords: 'example, generators'
+          },
+          args: [example.appName]
+        }
+      );
     },
     createComponent: function () {
       this.log('Create component: ', example.componentName);
