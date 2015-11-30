@@ -3,6 +3,13 @@ A Yeoman generator for Clay
 
 [![Circle CI](https://circleci.com/gh/nymag/generator-clay.svg?style=svg&circle-token=a4c35eb0cccf099844c822d0ac36e8495bd2d1d5)](https://circleci.com/gh/nymag/generator-clay)
 
+## Example
+You can use the example sub-generator to generate a clay **instance, site, & component** example with `clay-kiln` included.
+
+```
+yo clay:example
+```
+
 ## Clay Instance Generator
 You can use the main generator to generate an new clay **instance**.
 
