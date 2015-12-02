@@ -239,8 +239,8 @@ module.exports = generators.NamedBase.extend({
         readmePath = path.join(folder, 'README.md'),
         hasReadme = this.fs.exists(readmePath);
 
-      if (isNPM && !hasReadme) {
-        this.fs.copyTpl(this.templatePath('README.md'), readmePath, { folderName: folderName, name: name });
+      if (!hasReadme) {
+        this.fs.copyTpl(this.templatePath('README.md'), readmePath, { folderName: folderName, name: name, isNPM: isNPM });
       }
     },
 

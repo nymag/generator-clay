@@ -50,6 +50,13 @@ describe('clay:component', function () {
       assert.file(file);
       assert.fileContent(file, /class="foo"/);
     });
+
+    it('creates a non-npm readme if it doesn\'t exist', function () {
+      var file = path.join(folder, 'README.md');
+
+      assert.file(file);
+      assert.fileContent(file, /non-public component/);
+    });
   });
 
   describe('--tag', function () {
@@ -183,8 +190,11 @@ describe('clay:component', function () {
       assert.fileContent(file, /"style": "\*\.css"/);
     });
 
-    it('creates readme if it doesn\'t exist', function () {
-      assert.file('README.md');
+    it('creates an npm readme if it doesn\'t exist', function () {
+      var file = 'README.md';
+
+      assert.file(file);
+      assert.fileContent(file, /Install/);
     });
 
     it('creates eslintrc', function () {
