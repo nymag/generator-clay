@@ -55,7 +55,7 @@ describe('clay:component', function () {
       var file = path.join(folder, 'README.md');
 
       assert.file(file);
-      assert.fileContent(file, /non-public component/);
+      assert.fileContent(file, /foo/);
     });
   });
 

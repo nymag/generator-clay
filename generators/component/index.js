@@ -62,6 +62,19 @@ module.exports = generators.NamedBase.extend({
   },
 
   prompting: {
+    getDescription: function () {
+      var done = this.async();
+
+      this._optionOrPrompt([{
+        type: 'input',
+        name: 'description',
+        message: 'Please provide a one-line description of your component',
+        default: this.appname
+      }], function () {
+        done();
+      }.bind(this));
+    },
+
     getTplExtension: function () {
       var done = this.async(),
         prompts = require('./prompts.js')();
@@ -236,11 +249,12 @@ module.exports = generators.NamedBase.extend({
         folder = this.folder,
         folderName = this.folderName,
         name = this.name,
+        description = this.description,
         readmePath = path.join(folder, 'README.md'),
         hasReadme = this.fs.exists(readmePath);
 
       if (!hasReadme) {
-        this.fs.copyTpl(this.templatePath('README.md'), readmePath, { folderName: folderName, name: name, isNPM: isNPM });
+        this.fs.copyTpl(this.templatePath('README.md'), readmePath, { folderName: folderName, name: name, isNPM: isNPM, description: description });
       }
     },
 

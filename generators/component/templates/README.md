@@ -2,6 +2,9 @@
 # <%= folderName %>
 A component for [Clay](https://github.com/nymag/amphora/wiki#clay-is-divided-into-components).
 
+## Description
+<%= description %>
+
 ## Install
 
 ```
@@ -18,8 +21,10 @@ To include it, create an instance of it and add a reference to a component list.
 
 <% } else { %>
 # <%= folderName %>
+A local component for [Clay](https://github.com/nymag/amphora/wiki#clay-is-divided-into-components).
 
-A non-public component for [Clay](https://github.com/nymag/amphora/wiki#clay-is-divided-into-components).
+## Description
+<%= description %>
 
 ## Usage
 
