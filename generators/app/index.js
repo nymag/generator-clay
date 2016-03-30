@@ -221,7 +221,7 @@ module.exports = generators.Base.extend({
 
       this.separator();
       mainDependencies = this.checkDeps(mainDependencies,'dependencies');
-      this.npmInstall(mainDependencies, { 'save': true });
+      this.npmInstall(mainDependencies, { save: true });
       this.log('Installed ' + chalk.yellow.bold('main dependencies.'));
     },
 
@@ -231,7 +231,7 @@ module.exports = generators.Base.extend({
 
       this.separator();
       gulpDependencies = this.checkDeps(gulpDependencies, 'dependencies');
-      this.npmInstall(gulpDependencies, { 'save': true });
+      this.npmInstall(gulpDependencies, { save: true });
       this.log('Installed ' + chalk.yellow.bold('gulp dependencies.'));
     },
 
@@ -241,7 +241,7 @@ module.exports = generators.Base.extend({
 
       this.separator();
       devDependencies = this.checkDeps(devDependencies, 'devDependencies');
-      this.npmInstall(devDependencies, { 'saveDev': true });
+      this.npmInstall(devDependencies, { saveDev: true });
       this.log('Installed ' + chalk.yellow.bold('dev dependencies.'));
     },
 
