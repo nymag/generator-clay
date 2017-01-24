@@ -100,7 +100,7 @@ module.exports = generators.NamedBase.extend({
           fields.push(answers.fieldName);
         }
 
-        if (answers.addFields) {
+        if (answers.addFields || answers.addMoreFields) {
           // keep going
           this._optionOrPrompt(promptsInputFields, continueFn.bind(this));
         } else {
